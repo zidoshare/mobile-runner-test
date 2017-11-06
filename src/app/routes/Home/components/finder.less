@@ -1,0 +1,45 @@
+.finder-item-container {
+  text-align: center;
+  >*{
+    padding:0 5%;
+  }
+  &:after {
+    content: "";
+    clear: both;
+    display: block;
+  }
+}
+
+.finder-container {
+  background: white;
+  img {
+    width: 100%;
+  }
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin:10px 1px;
+  }
+  p{
+    font-size:12px;
+    color:#999;
+  }
+  .right-panel {
+    flex: 1.5;
+  }
+
+  .right-line{
+    border-right: 1px solid #ddd;
+  }
+  .bottom-line{
+    border-bottom: 1px solid #ddd;
+  }
+}
