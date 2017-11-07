@@ -256,7 +256,7 @@ if (isDev) {
     },
     proxy: {
       '/api/v1/*': {
-        target: 'http://localhost:8089',
+        target: 'http://localhost:8090',
         changeOrigin: true,
         secure: false,
       },

@@ -1,27 +1,33 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Carousel,ActivityIndicator } from 'antd-mobile'
+import { ActivityIndicator } from 'antd-mobile'
+import Slider from 'react-slick'
+import './Banner.less'
 export default class Banner extends Component {
   static propTypes = {
-    banner:PropTypes.array,
-    bannerLoading:PropTypes.bool.isRequired,
+    banner: PropTypes.array,
+    bannerLoading: PropTypes.bool.isRequired,
   }
 
   render() {
-    const {banner,bannerLoading} = this.props
+    const { banner, bannerLoading } = this.props
+    let settings = {
+      className: 'banner-container',
+      infinite: true,
+      // autoplay: true,
+      autoplaySpeed: 2000,
+      arrows:false,
+      dots:true,
+    }
     return (
       <div>
-        {bannerLoading?<ActivityIndicator text="正在加载"/>:<Carousel
-          className="my-carousel"
-          autoplay={false}
-          infinite
-          selectedIndex={1}
-          swipeSpeed={35}
+        {bannerLoading ? <ActivityIndicator text="正在加载" /> : <Slider
+          {...settings}
         >
-          {banner.map(ii => (
-            <img src={ii}/>
+          {banner.map((ii, index) => (
+            <img src={ii} key={'banner' + index} />
           ))}
-        </Carousel>}
+        </Slider>}
       </div>
     )
   }

@@ -5,8 +5,8 @@ import { Route, Switch } from 'react-router-dom'
 import { ConnectedRouter } from 'react-router-redux'
 import store from './reducers'
 import { history } from './reducers'
-
 import Home from './routes/Home'
+import Commodities from './routes/Commodities'
 import './style/core.scss'
 
 export default class App extends React.Component {
@@ -19,14 +19,11 @@ export default class App extends React.Component {
       <Provider store={store}>
         <ConnectedRouter history={history}>
           <Switch>
-            <Route path="/" component={Home}/>
+            <Route path="/" exact component={Home}/>
+            <Route path="/commodities" component={Commodities} />
           </Switch>
         </ConnectedRouter>
       </Provider>
     )
   }
-}
-
-App.propTypes = {
-  location: PropTypes.object.isRequired,
 }

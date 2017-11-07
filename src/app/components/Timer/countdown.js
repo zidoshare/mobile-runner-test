@@ -8,7 +8,6 @@ export const leftPad = (num, len = 2, ch = '0') => {
   }
   return num
 }
-
 class DownDate {
   years
   mouths

@@ -7,9 +7,10 @@ import Timer from '../../../components/Timer'
 import './Recommends.less'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
+const FlexItem = Flex.Item
 export default class Recommends extends Component {
   static propTypes = {
-    recommends: PropTypes.object.isRequired,
+    recommends: PropTypes.array.isRequired,
     recommendsLoading: PropTypes.bool.isRequired,
   }
 
@@ -33,7 +34,7 @@ export default class Recommends extends Component {
               今日推荐
           </h3>
           </div>
-          <Flex.Item>
+          <FlexItem>
             <Slider {...settings}>
               {recommends.map((value, index) => (
                 <div key={'recom' + index}>
@@ -46,7 +47,7 @@ export default class Recommends extends Component {
                 </div>
               ))}
             </Slider>
-          </Flex.Item>
+          </FlexItem>
         </Flex>
       </WingBlank>
     )

@@ -41,7 +41,14 @@ export default class Timer extends React.Component {
     var diffSecond = parseInt((endTime - startTime) / 1000) //结束时间到现在差的秒数
     if (diffSecond > 0) {
       this.setState({
-        remaining: countdown(startTime, endTime),
+        remaining: countdown(startTime, endTime,{
+          years: false,
+          mouths: false,
+          days: true,
+          hours: true,
+          minutes: true,
+          seconds: true,
+        }).formart(),
         startTime: new Date(startTime.getTime() + 1000)
       })
     } else {
@@ -73,7 +80,10 @@ Timer.defaultProps = {
 Timer.propTypes = {
   style: PropTypes.object,
   className: PropTypes.string,
-  endTime: PropTypes.instanceOf(Date).isRequired,
+  endTime: PropTypes.oneOfType([
+    PropTypes.instanceOf(Date),
+    PropTypes.number,
+  ]).isRequired,
   startTime: PropTypes.instanceOf(Date),
   callback: PropTypes.func,
   endText: PropTypes.node,

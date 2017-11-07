@@ -7,7 +7,7 @@ import './SliderList.less'
 import Slider from 'react-slick'
 export default class SliderList extends Component {
   static propTypes = {
-    winners: PropTypes.object.isRequired,
+    winners: PropTypes.array.isRequired,
   }
 
   render() {

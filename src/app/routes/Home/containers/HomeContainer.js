@@ -6,7 +6,7 @@ import Menu from '../components/Menu'
 import Finder from '../components/Finder'
 import Recommends from '../components/Recommends'
 import SliderList from '../components/SliderList'
-import {WhiteSpace,Button} from 'antd-mobile'
+import {WhiteSpace} from 'antd-mobile'
 export class Home extends Component {
   static propTypes = {
     home: PropTypes.object.isRequired,
@@ -16,7 +16,6 @@ export class Home extends Component {
     const {banner,bannerLoading,auction,auctionLoading,recommends,winners,recommendsLoading,winnersLoading} = this.props.home
     return (
       <div>
-        <Button >按钮</Button>
         <Banner banner={banner} bannerLoading={bannerLoading}/>
         <WhiteSpace size="md" />
         <Menu/>

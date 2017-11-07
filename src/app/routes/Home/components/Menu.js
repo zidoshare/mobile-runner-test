@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { WingBlank, Grid } from 'antd-mobile'
 import './menu.less'
-
+import {withRouter} from 'react-router-dom'
 const menu = [{
   icon: 'http://odp22tnw6.bkt.clouddn.com/v2/ccas/icon-auction.png',
   text: '拍卖',
   span: '出价得拍品',
+  path:'/commodities'
 },{
   icon:'http://odp22tnw6.bkt.clouddn.com/v2/ccas/icon-to.png',
   text:'送拍',
@@ -20,7 +22,13 @@ const menu = [{
   span:'个人中心'
 }]
 
-export default class Menu extends Component {
+class Menu extends Component {
+  static propTypes = {
+    history:PropTypes.object.isRequired,
+  }
+  goto = (el) =>{
+    this.props.history.push(el.path)
+  }
   render() {
     return (
       <div>
@@ -33,9 +41,11 @@ export default class Menu extends Component {
               </div>
               <div className="hm-item-ins">{el.span}</div>
             </div>
-          )} />
+          )} onClick={this.goto}/>
         </WingBlank>
       </div>
     )
   }
 }
+
+export default withRouter(Menu)

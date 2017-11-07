@@ -101,44 +101,45 @@ const initialState = {
   winningLoading:false,
   banner:['http://odp22tnw6.bkt.clouddn.com/v2/ccas/banner.jpg','http://odp22tnw6.bkt.clouddn.com/v2/ccas/banner.jpg'],
   auction:{
-    imageUrl:'http://odp22tnw6.bkt.clouddn.com/2017/10/11/163dcfc6-58aa-4466-adcc-66ce761e6e57.jpg'
+    imageUrl:'http://odp22tnw6.bkt.clouddn.com/2017/10/11/163dcfc6-58aa-4466-adcc-66ce761e6e57.jpg',
+    endTime:1541572385005,
   },
   recommends:[{
     head:'http://odp22tnw6.bkt.clouddn.com/',
     url:'2017/10/11/163dcfc6-58aa-4466-adcc-66ce761e6e57.jpg',
     name:'名称',
     price:100,
-    endTime:1509940009740,
+    endTime:1541572385005,
   },{
     head:'http://odp22tnw6.bkt.clouddn.com/',
     url:'2017/10/11/163dcfc6-58aa-4466-adcc-66ce761e6e57.jpg',
     name:'名称',
     price:100,
-    endTime:1509940009740,
+    endTime:1541572385005,
   },{
     head:'http://odp22tnw6.bkt.clouddn.com/',
     url:'2017/10/11/163dcfc6-58aa-4466-adcc-66ce761e6e57.jpg',
     name:'名称',
     price:100,
-    endTime:1509940009740,
+    endTime:1541572385005,
   },{
     head:'http://odp22tnw6.bkt.clouddn.com/',
     url:'2017/10/11/163dcfc6-58aa-4466-adcc-66ce761e6e57.jpg',
     name:'名称',
     price:100,
-    endTime:1509940009740,
+    endTime:1541572385005,
   },{
     head:'http://odp22tnw6.bkt.clouddn.com/',
     url:'2017/10/11/163dcfc6-58aa-4466-adcc-66ce761e6e57.jpg',
     name:'名称',
     price:100,
-    endTime:1509940009740,
+    endTime:1541572385005,
   },{
     head:'http://odp22tnw6.bkt.clouddn.com/',
     url:'2017/10/11/163dcfc6-58aa-4466-adcc-66ce761e6e57.jpg',
     name:'名称',
     price:100,
-    endTime:1509940009740,
+    endTime:1541572385005,
   },],
   winners:[{
 
