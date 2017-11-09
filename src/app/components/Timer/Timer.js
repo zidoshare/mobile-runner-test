@@ -11,11 +11,11 @@ export default class Timer extends React.Component {
       end: false,
     }
   }
-  componentDidMount() {
+  componentWillMount() {
     this.runTimer()
   }
   componentWillUnmount() {
-    if (this.state.id != null) {
+    if (this.state.id) {
       window.clearInterval(this.state.id)
     }
   }

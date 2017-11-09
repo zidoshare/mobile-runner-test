@@ -1,6 +1,6 @@
 const COM_LOAD_ROOTS = 'COM_LOAD_TYPES'
 const COM_LOAD_COMMODITIES = 'COM_LOAD_COMMODITIES'
-import {get} from '../../../Util'
+import { get } from '../../../Util'
 import apiUrl from '../../../apiUrl'
 
 export const loadRoots = () => dispatch => {
@@ -14,41 +14,47 @@ export const loadRoots = () => dispatch => {
   })
 }
 
-export const loadCommodities = (type,currentPage) => dispatch => {
-  get(apiUrl.commoditiesUrl, {
+export const loadCommodities = (type, currentPage) => dispatch => {
+  return get(apiUrl.commoditiesUrl, {
     currentPage,
     type,
   }).then(json => {
     if (json.success) {
-      dispatch({
+      const action = {
         type: COM_LOAD_COMMODITIES,
-        condition:{
+        condition: {
           type,
         },
         data: json.data.records,
-        page: json.data,
-      })
+        loading: false,
+      }
+      const page = {
+        ...json.data,
+      }
+      delete page.records
+      action.page = page
+      dispatch(action)
     }
   })
 }
 
 const ACTION_HANDLERS = {
-  [COM_LOAD_ROOTS]: (state, action) => ({...state, types: action.data}),
+  [COM_LOAD_ROOTS]: (state, action) => ({ ...state, types: action.data }),
   [COM_LOAD_COMMODITIES]: (state, action) => {
     let result = state.types.find(t => t.id === action.condition.type)
-    if(!result){
+    if (!result) {
       return state
     }
     if (!result.page || action.page.current > result.page.current) {
-      if(!result.commodities){
+      if (!result.commodities) {
         result.commodities = []
       }
       result.commodities = result.commodities.concat(action.data)
-      
       result.page = action.page
       result.initialed = true
+      result.hasMore = (action.page.current < action.page.pages - 1)
       return {
-        types:[...state.types]
+        types: [...state.types]
       }
     } else {
       return state
@@ -57,7 +63,7 @@ const ACTION_HANDLERS = {
 }
 
 const initialState = {
-  types:[],
+  types: [],
 }
 
 export default (state = initialState, action) => {

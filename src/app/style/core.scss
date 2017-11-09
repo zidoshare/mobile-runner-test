@@ -34,3 +34,13 @@
     vertical-align: middle;
   }
 }
+
+#root{
+  height:100vh;
+}
+
+.ellipsis{
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+}

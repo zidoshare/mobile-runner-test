@@ -2,24 +2,24 @@ const HOME_LOAD_BANNER = 'HOME_LOAD_BANNER'
 const HOME_LOAD_AUCTIONS = 'HOME_LOAD_AUCTIONS'
 const HOME_LOAD_RECOMMENDS = 'HOME_LOAD_RECOMMENDS'
 const HOME_LOAD_WINNING = 'HONG_LOAD_WINNING'
-import {get} from '../../../Util'
+import { get } from '../../../Util'
 import apiUrl from '../../../apiUrl'
 export const loadBanner = () => dispatch => {
   dispatch({
-    type:HOME_LOAD_BANNER,
-    bannerLoading:true,
+    type: HOME_LOAD_BANNER,
+    bannerLoading: true,
   })
   get(apiUrl.bannerUrl).then(json => {
-    if(json.success){
+    if (json.success) {
       dispatch({
-        type:HOME_LOAD_BANNER,
-        banner:json.data,
-        bannerLoading:false,
+        type: HOME_LOAD_BANNER,
+        banner: json.data,
+        bannerLoading: false,
       })
-    }else{
+    } else {
       dispatch({
-        type:HOME_LOAD_BANNER,
-        bannerLoading:false,
+        type: HOME_LOAD_BANNER,
+        bannerLoading: false,
       })
     }
   })
@@ -27,20 +27,20 @@ export const loadBanner = () => dispatch => {
 
 export const loadAuctions = () => dispatch => {
   dispatch({
-    type:HOME_LOAD_AUCTIONS,
-    auctionLoading:true,
+    type: HOME_LOAD_AUCTIONS,
+    auctionLoading: true,
   })
   get(apiUrl.auctionUrl).then(json => {
-    if(json.success){
+    if (json.success) {
       dispatch({
-        type:HOME_LOAD_AUCTIONS,
-        auctionLoading:false,
-        auction:json.data,
+        type: HOME_LOAD_AUCTIONS,
+        auctionLoading: false,
+        auction: json.data,
       })
-    }else{
+    } else {
       dispatch({
-        type:HOME_LOAD_AUCTIONS,
-        auctionLoading:false,
+        type: HOME_LOAD_AUCTIONS,
+        auctionLoading: false,
       })
     }
   })
@@ -48,20 +48,20 @@ export const loadAuctions = () => dispatch => {
 
 export const loadRecommeds = () => dispatch => {
   dispatch({
-    type:HOME_LOAD_RECOMMENDS,
-    recommendsLoading:true
+    type: HOME_LOAD_RECOMMENDS,
+    recommendsLoading: true
   })
-  get(apiUrl.recommendsUrl).then(json => {
-    if(json.success){
+  get(apiUrl.commoditiesUrl).then(json => {
+    if (json.success) {
       dispatch({
-        type:HOME_LOAD_RECOMMENDS,
-        recommendsLoading:false,
-        recommends:json.data,
+        type: HOME_LOAD_RECOMMENDS,
+        recommendsLoading: false,
+        recommends: json.data.records,
       })
-    }else{
+    } else {
       dispatch({
-        type:HOME_LOAD_RECOMMENDS,
-        recommendsLoading:false,
+        type: HOME_LOAD_RECOMMENDS,
+        recommendsLoading: false,
       })
     }
   })
@@ -69,94 +69,53 @@ export const loadRecommeds = () => dispatch => {
 
 export const loadWinning = () => dispatch => {
   dispatch({
-    type:HOME_LOAD_WINNING,
-    winningLoading:true
+    type: HOME_LOAD_WINNING,
+    winnersLoading: true
   })
   get(apiUrl.winnersUrl).then(json => {
-    if(json.success){
+    if (json.success) {
       dispatch({
-        type:HOME_LOAD_WINNING,
-        winningLoading:false,
-        winners:json.data,
+        type: HOME_LOAD_WINNING,
+        winnersLoading: false,
+        winners: json.data,
       })
-    }else{
+    } else {
       dispatch({
-        type:HOME_LOAD_WINNING,
-        winningLoading:false,
+        type: HOME_LOAD_WINNING,
+        winnersLoading: false,
       })
     }
   })
 }
 
 const ACTION_HANDLERS = {
-  [HOME_LOAD_BANNER]:(state,action) => ({...state,...action}),
-  [HOME_LOAD_AUCTIONS]:(state,action) => ({...state,...action}),
-  [HOME_LOAD_RECOMMENDS]:(state,action) => ({...state,...action}),
+  [HOME_LOAD_BANNER]: (state, action) => ({ ...state, ...action }),
+  [HOME_LOAD_AUCTIONS]: (state, action) => ({ ...state, ...action }),
+  [HOME_LOAD_RECOMMENDS]: (state, action) => ({ ...state, ...action }),
 }
 
 const initialState = {
-  bannerLoading:false,
-  auctionLoading:false,
-  recommendsLoading:false,
-  winningLoading:false,
-  banner:['http://odp22tnw6.bkt.clouddn.com/v2/ccas/banner.jpg','http://odp22tnw6.bkt.clouddn.com/v2/ccas/banner.jpg'],
-  auction:{
-    imageUrl:'http://odp22tnw6.bkt.clouddn.com/2017/10/11/163dcfc6-58aa-4466-adcc-66ce761e6e57.jpg',
-    endTime:1541572385005,
-  },
-  recommends:[{
-    head:'http://odp22tnw6.bkt.clouddn.com/',
-    url:'2017/10/11/163dcfc6-58aa-4466-adcc-66ce761e6e57.jpg',
-    name:'名称',
-    price:100,
-    endTime:1541572385005,
-  },{
-    head:'http://odp22tnw6.bkt.clouddn.com/',
-    url:'2017/10/11/163dcfc6-58aa-4466-adcc-66ce761e6e57.jpg',
-    name:'名称',
-    price:100,
-    endTime:1541572385005,
-  },{
-    head:'http://odp22tnw6.bkt.clouddn.com/',
-    url:'2017/10/11/163dcfc6-58aa-4466-adcc-66ce761e6e57.jpg',
-    name:'名称',
-    price:100,
-    endTime:1541572385005,
-  },{
-    head:'http://odp22tnw6.bkt.clouddn.com/',
-    url:'2017/10/11/163dcfc6-58aa-4466-adcc-66ce761e6e57.jpg',
-    name:'名称',
-    price:100,
-    endTime:1541572385005,
-  },{
-    head:'http://odp22tnw6.bkt.clouddn.com/',
-    url:'2017/10/11/163dcfc6-58aa-4466-adcc-66ce761e6e57.jpg',
-    name:'名称',
-    price:100,
-    endTime:1541572385005,
-  },{
-    head:'http://odp22tnw6.bkt.clouddn.com/',
-    url:'2017/10/11/163dcfc6-58aa-4466-adcc-66ce761e6e57.jpg',
-    name:'名称',
-    price:100,
-    endTime:1541572385005,
-  },],
-  winners:[{
+  bannerLoading: false,
+  auctionLoading: true,
+  recommendsLoading: true,
+  winnersLoading: false,
+  banner: ['http://odp22tnw6.bkt.clouddn.com/v2/ccas/banner.jpg', 'http://odp22tnw6.bkt.clouddn.com/v2/ccas/banner.jpg'],
+  winners: [{
 
-  },{
+  }, {
 
-  },{
+  }, {
 
-  },{
+  }, {
 
-  },{
+  }, {
 
-  },{
-    
+  }, {
+
   }]
 }
-export default (state = initialState,action) => {
+export default (state = initialState, action) => {
   const handler = ACTION_HANDLERS[action.type]
-  
+
   return handler ? handler(state, action) : state
 }

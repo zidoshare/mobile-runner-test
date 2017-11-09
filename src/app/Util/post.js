@@ -5,8 +5,9 @@
  */
 import objToQuery from './objToQuery'
 import isEmpty from './isEmpty'
+import {Toast} from 'antd-mobile'
 export const defaultReject = (err) => {
-  console.error(err.message || '服务器异常')
+  Toast.fail(err.message || '服务器异常')
 }
 
 function AjaxError(message){

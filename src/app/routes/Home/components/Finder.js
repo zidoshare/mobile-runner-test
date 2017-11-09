@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Flex, WingBlank } from 'antd-mobile'
+import { Link } from 'react-router-dom'
 import Timer from '../../../components/Timer'
 import './finder.less'
 const FlexItem = Flex.Item
@@ -24,9 +25,11 @@ export default class Finder extends Component {
           <div className="finder-item-container right-panel">
             <Flex className="bottom-line">
               <FlexItem>
-                <h5>精品推荐</h5>
-                <p>精品中的精品</p>
-                <p>你值得拥有</p>
+                <Link to="/commodities">
+                  <h5>精品推荐</h5>
+                  <p>精品中的精品</p>
+                  <p>你值得拥有</p>
+                </Link>
               </FlexItem>
               <FlexItem>
                 <img src='http://odp22tnw6.bkt.clouddn.com/2017/10/11/163dcfc6-58aa-4466-adcc-66ce761e6e57.jpg' />
@@ -34,9 +37,11 @@ export default class Finder extends Component {
             </Flex>
             <Flex>
               <FlexItem>
-                <h5>藏品自营</h5>
-                <p>限时限量抢购</p>
-                <p>各类精品好货</p>
+                <a href="http://www.chuangyuandi.net.cn">
+                  <h5>藏品自营</h5>
+                  <p>限时限量抢购</p>
+                  <p>各类精品好货</p>
+                </a>
               </FlexItem>
               <FlexItem>
                 <img src='http://odp22tnw6.bkt.clouddn.com/2017/10/11/163dcfc6-58aa-4466-adcc-66ce761e6e57.jpg' />

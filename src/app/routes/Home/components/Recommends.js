@@ -11,7 +11,6 @@ const FlexItem = Flex.Item
 export default class Recommends extends Component {
   static propTypes = {
     recommends: PropTypes.array.isRequired,
-    recommendsLoading: PropTypes.bool.isRequired,
   }
 
   render() {
@@ -38,7 +37,7 @@ export default class Recommends extends Component {
             <Slider {...settings}>
               {recommends.map((value, index) => (
                 <div key={'recom' + index}>
-                  <Link to="">
+                  <Link to={`/commodity/${value.id}`}>
                     <img src={`${value.head}${value.url}`} />
                     <h5>{value.name}</h5>
                     <p>{value.price}</p>
