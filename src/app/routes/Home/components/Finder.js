@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Flex, WingBlank } from 'antd-mobile'
-import { Link } from 'react-router-dom'
 import Timer from '../../../components/Timer'
+import StandLink from '../../../components/StandLink'
 import './finder.less'
 const FlexItem = Flex.Item
 export default class Finder extends Component {
@@ -16,37 +16,39 @@ export default class Finder extends Component {
       <WingBlank size="sm">
         <Flex className="finder-container">
           <FlexItem className="finder-item-container right-line">
-            <h5>专场拍卖</h5>
-            <p><Timer endTime={endTime} /></p>
-            <div>
-              <img src={imageUrl} />
-            </div>
+            <StandLink to="/auction">
+              <h5>专场拍卖</h5>
+              <p><Timer endTime={endTime} /></p>
+              <div>
+                <img src={imageUrl} />
+              </div>
+            </StandLink>
           </FlexItem>
           <div className="finder-item-container right-panel">
-            <Flex className="bottom-line">
-              <FlexItem>
-                <Link to="/commodities">
+            <StandLink to="/commodities">
+              <Flex className="bottom-line">
+                <FlexItem>
                   <h5>精品推荐</h5>
                   <p>精品中的精品</p>
                   <p>你值得拥有</p>
-                </Link>
-              </FlexItem>
-              <FlexItem>
-                <img src='http://odp22tnw6.bkt.clouddn.com/2017/10/11/163dcfc6-58aa-4466-adcc-66ce761e6e57.jpg' />
-              </FlexItem>
-            </Flex>
-            <Flex>
-              <FlexItem>
-                <a href="http://www.chuangyuandi.net.cn">
+                </FlexItem>
+                <FlexItem>
+                  <img src='http://odp22tnw6.bkt.clouddn.com/2017/10/11/163dcfc6-58aa-4466-adcc-66ce761e6e57.jpg' />
+                </FlexItem>
+              </Flex>
+            </StandLink>
+            <StandLink to="http://www.chuangyuandi.net.cn" out={true}>
+              <Flex>
+                <FlexItem>
                   <h5>藏品自营</h5>
                   <p>限时限量抢购</p>
                   <p>各类精品好货</p>
-                </a>
-              </FlexItem>
-              <FlexItem>
-                <img src='http://odp22tnw6.bkt.clouddn.com/2017/10/11/163dcfc6-58aa-4466-adcc-66ce761e6e57.jpg' />
-              </FlexItem>
-            </Flex>
+                </FlexItem>
+                <FlexItem>
+                  <img src='http://odp22tnw6.bkt.clouddn.com/2017/10/11/163dcfc6-58aa-4466-adcc-66ce761e6e57.jpg' />
+                </FlexItem>
+              </Flex>
+            </StandLink>
           </div>
         </Flex>
       </WingBlank>

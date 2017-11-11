@@ -1,4 +1,4 @@
-import { NavBar, Icon, ActionSheet, WingBlank, WhiteSpace, Button, Toast } from 'antd-mobile'
+import { NavBar, Icon, ActionSheet } from 'antd-mobile'
 import React from 'react'
 import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
@@ -18,6 +18,7 @@ class ChildNavBar extends React.Component {
     mode: PropTypes.string,
     onLeftClick: PropTypes.func,
     onSearch: PropTypes.func,
+    style: PropTypes.object,
   }
   static defaultProps = {
     icon: <Icon type="left" />,
@@ -65,18 +66,19 @@ class ChildNavBar extends React.Component {
     }
     if (fix) {
       props.style = {
+        ...this.props.style,
         position: 'fixed',
         top: 0,
         left: 0,
         width: '100%',
-        zIndex:1,
+        zIndex: 999,
       }
     }
     return <div>
       <NavBar
         {...props}
         rightContent={rightContent || rc}
-        onLeftClick={this.props.history.goBack}
+        onLeftClick={props.icon ? this.props.history.goBack : null}
       >{title}</NavBar>
     </div>
   }

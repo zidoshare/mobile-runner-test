@@ -23,7 +23,7 @@ class CommoditiesContainer extends Component {
     const { loadCommodities } = this.props
     return (
       <div className="commodities-container">
-        <ChildNavBar title="分类拍卖"/>
+        <ChildNavBar title="专场拍卖"/>
         <div className="commodities-content-wrapper">
           <TypesPage types={types} loadCommodities={loadCommodities} />
         </div>
@@ -33,7 +33,7 @@ class CommoditiesContainer extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  com: state.coms,
+  com: state.auction,
 })
 
 const mapDispatchToProps = {

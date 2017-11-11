@@ -11,7 +11,8 @@ const menu = [{
 },{
   icon:'http://odp22tnw6.bkt.clouddn.com/v2/ccas/icon-to.png',
   text:'送拍',
-  span:'专家鉴定'
+  span:'专家鉴定',
+  path:'/send',
 },{
   icon:'http://odp22tnw6.bkt.clouddn.com/v2/ccas/icon-notice.png',
   text:'消息',
@@ -19,7 +20,8 @@ const menu = [{
 },{
   icon:'http://odp22tnw6.bkt.clouddn.com/v2/ccas/icon-my.png',
   text:'我的',
-  span:'个人中心'
+  span:'个人中心',
+  path:'/person',
 }]
 
 class Menu extends Component {

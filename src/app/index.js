@@ -7,7 +7,12 @@ import { history } from './reducers'
 import Home from './routes/Home'
 import Commodities from './routes/Commodities'
 import Commodity from './routes/Commodity'
+import Send from './routes/Send'
+import Person from './routes/Person'
+import PersonInfo from './routes/PersonInfo'
+import Auction from './routes/Auctions'
 import './style/core.scss'
+import MyAddress from './routes/MyAddress'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -19,9 +24,14 @@ export default class App extends React.Component {
       <Provider store={store}>
         <ConnectedRouter history={history}>
           <Switch>
-            <Route path="/" exact component={Home}/>
+            <Route path="/" exact component={Home} />
             <Route path="/commodities" component={Commodities} />
             <Route path="/commodity/:id" component={Commodity} />
+            <Route path="/send" component={Send} />
+            <Route path="/person" component={Person} />
+            <Route path="/personInfo" component={PersonInfo} />
+            <Route path="/address" component={MyAddress} />
+            <Route path="/auction" component={Auction} />
           </Switch>
         </ConnectedRouter>
       </Provider>

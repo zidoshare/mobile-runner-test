@@ -20,15 +20,19 @@ export default class Banner extends Component {
       autoplaySpeed: 2000,
       arrows: false,
       dots: true,
+      adaptiveHeight: true,
     }
+    const bannerList = banner.map((ii, index) => (
+      <div key={'banner' + index}>
+        <img src={ii} />
+      </div>
+    ))
     return (
       <div>
         <Slider
           {...settings}
         >
-          {banner.map((ii, index) => (
-            <img src={ii} key={'banner' + index} />
-          ))}
+          {bannerList}
         </Slider>
       </div>
     )

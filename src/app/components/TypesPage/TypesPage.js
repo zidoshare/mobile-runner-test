@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Tabs, Button } from 'antd-mobile'
 import { StickyContainer, Sticky } from 'react-sticky'
-import {Link} from 'react-router-dom'
-export default class Types extends Component {
+import { Link } from 'react-router-dom'
+export default class TypesPage extends Component {
   static propTypes = {
     types: PropTypes.array.isRequired,
     loadCommodities: PropTypes.func.isRequired,
@@ -25,8 +25,8 @@ export default class Types extends Component {
         tab.commodities.length > 0 ? tab.commodities.map((value) => (
           <Link to={`/commodity/${value.id}`} key={`item-${value.id}`} className="com-list-item">
             <div className="com-list-item-head">{value.title}</div>
-            <div style={{ padding: '15px 0'}}>
-              <div style={{textAlign:'center'}}>
+            <div style={{ padding: '15px 0' }}>
+              <div style={{ textAlign: 'center' }}>
                 <img style={{ height: '120px' }} src={`${value.head}${value.url}`} />
               </div>
               <div style={{ lineHeight: 1 }}>
