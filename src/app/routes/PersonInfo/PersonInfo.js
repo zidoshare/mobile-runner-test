@@ -54,7 +54,7 @@ class PersonInfo extends Component {
               ref={el => this.autoFocusInst = el}
             >昵称</InputItem>
             <Picker data={[{ value: 0, label: '男' }, { value: 1, label: '女' }]} cols={1} {...getFieldProps('sex') } className="forss">
-              <List.Item arrow="horizontal">性别</List.Item>
+              <ListItem arrow="horizontal">性别</ListItem>
             </Picker>
             <InputItem
               {...getFieldProps('phone') }

@@ -74,7 +74,7 @@ class CommodityContainer extends Component {
                     value:value,
                     label:'加价'+value+'元',
                   }))} cols={1} {...getFieldProps('district3') } className="forss">
-                    <List.Item arrow="horizontal">选择加价金额</List.Item>
+                    <ListItem arrow="horizontal">选择加价金额</ListItem>
                   </Picker>
                 </ListItem>
                 <ListItem>

@@ -43,7 +43,7 @@ class Send extends Component {
               placeholder="点击输入拍品名称"
             >拍品名称</InputItem>
             <Picker data={types} cols={1} {...getFieldProps('type') }>
-              <List.Item arrow="horizontal">拍品分类</List.Item>
+              <ListItem arrow="horizontal">拍品分类</ListItem>
             </Picker>
             <InputItem
               {...getFieldProps('userName') }

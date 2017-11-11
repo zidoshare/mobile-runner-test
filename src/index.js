@@ -1,7 +1,25 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { AppContainer } from 'react-hot-loader'
+
 const Root = document.getElementById('root')
+
+// function getQueryString(name) {
+//   var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i')
+//   var result = window.location.search.substr(1).match(reg)
+//   if (result != null) {
+//     return result[2]
+//   } else {
+//     return null
+//   }
+// }
+// let code = getQueryString('code')
+// if (code) {
+//   alert(code)
+// } else {
+//   window.location.href = encodeURI('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxba710e7a2fd8ba1c&redirect_uri=http://www.chenxiculture.cn&response_type=code&scope=snsapi_userinfo#wechat_redirect')
+// }
+
 
 let render = () => {
   const App = require('./app/index').default
