@@ -5,12 +5,12 @@
  */
 import objToQuery from './objToQuery'
 import isEmpty from './isEmpty'
-import {Toast} from 'antd-mobile'
+import { Toast } from 'antd-mobile'
 export const defaultReject = (err) => {
   Toast.fail(err.message || '服务器异常')
 }
 
-function AjaxError(message){
+function AjaxError(message) {
   this.success = false
   this.message = message
 }
@@ -31,9 +31,9 @@ export const resolveJson = (data, cb) => {
 }
 
 export const createHttpPromise = (url, data = {}, headers = require('./HttpHeader'), method = 'POST') => {
-  if(headers['Content-Type'] && headers['Content-Type'].indexOf('application/x-www-form-urlencoded') !== -1){
+  if (headers['Content-Type'] && headers['Content-Type'].indexOf('application/x-www-form-urlencoded') !== -1) {
     data = objToQuery(data)
-  }else {
+  } else {
     data = data && JSON.stringify(data)
   }
   return fetch(url, {
@@ -51,8 +51,8 @@ export const createHttpPromise = (url, data = {}, headers = require('./HttpHeade
     }
   }).catch(err => {
     return {
-      success:false,
-      message:err.message
+      success: false,
+      message: err.message
     }
   }).then((json) => {
     if (!json.success) {
@@ -60,7 +60,7 @@ export const createHttpPromise = (url, data = {}, headers = require('./HttpHeade
     }
     else {
       if (!isEmpty(json.message))
-        Message.success(json.message)
+        Toast.success(json.message)
       return json
     }
   }).catch((err) => {

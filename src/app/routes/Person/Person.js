@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import ChildNavBar from '../../components/ChildNavBar'
-import { Grid, Toast } from 'antd-mobile'
+import { Grid, Toast, ActivityIndicator } from 'antd-mobile'
 import PropTypes from 'prop-types'
+import { get } from '../../Util'
+import apiUrl from '../../apiUrl'
 import './Person.less'
 const PersonNav = [{
   icon: 'http://odp22tnw6.bkt.clouddn.com/v2/ccas/icon-person.png',
@@ -58,11 +60,40 @@ export default class Person extends Component {
     this.state = {
       navStyle: {
         backgroundColor: '#E36849', color: 'white'
-      }
+      },
+      info: {
+        nickname: '------',
+
+      },
+      loading: true,
     }
   }
   componentDidMount() {
     this.initialBackground()
+    this.loadInfo()
+  }
+
+  loadInfo = () => {
+    this.setState({
+      loading: true,
+    })
+    get(apiUrl.myMsgUrl).then(json => {
+      if (json.success) {
+        this.setState({
+          loading: false,
+          info: json.data,
+        })
+      } else {
+        //TODO 获取登录路径并跳转到登录页
+        get(apiUrl.wechatLoginUrl, {
+          operate: 'http://api.chuangyuandi.net.cn/person',
+        }).then(json => {
+          if (json.success) {
+            window.location.href = json.data
+          }
+        })
+      }
+    })
   }
 
   initialBackground() {
@@ -89,15 +120,21 @@ export default class Person extends Component {
     }
   }
   render() {
+    const { info } = this.state
     return (
       <div className="person-container">
         <ChildNavBar title="个人中心" style={this.state.navStyle} rightContent={[]} />
         <div>
+          <ActivityIndicator
+            toast
+            text="正在获取用户信息..."
+            animating={this.state.loading}
+          />
           <div className="head-container">
             <div className="random-bg-container">
             </div>
-            <div className="head-ins">
-              <div className="head-name-panel ellipsis">王宝宝</div>
+            <div className="head-ins" style={{ backgroundImage: `${info.headportrait}` }}>
+              <div className="head-name-panel ellipsis">{info.nickname}</div>
             </div>
           </div>
         </div>

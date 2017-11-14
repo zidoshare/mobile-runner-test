@@ -7,4 +7,7 @@ export default {
   auctionUrl:'/api/v1/auction/getCurrentAuction',
   myAuctionUrl:'/api/v1/auction/g',
   allAddressUrl:'/api/v1/receivingInfo/all',
+  myMsgUrl:'/api/auth/user/myMsg',
+  sendBindPhoneUrl:'/api/v1/sms/bind',
+  wechatLoginUrl:'/api/v1/oauth/wechaturl'
 }

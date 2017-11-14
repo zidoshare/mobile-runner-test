@@ -265,11 +265,16 @@ if (isDev) {
         changeOrigin: true,
         secure: false,
       },
+      '/api/auth/*': {
+        target: 'http://localhost:8090',
+        changeOrigin: true,
+        secure: false,
+      },
       '/api/*': {
         target: 'http://localhost:8089',
         changeOrigin: true,
         secure: false,
-      }
+      },
     },
     host: '0.0.0.0',
     disableHostCheck: true,

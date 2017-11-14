@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { AppContainer } from 'react-hot-loader'
-
+// import {get} from './app/Util'
 const Root = document.getElementById('root')
 
 // function getQueryString(name) {
@@ -15,7 +15,7 @@ const Root = document.getElementById('root')
 // }
 // let code = getQueryString('code')
 // if (code) {
-//   alert(code)
+//   get('/api/auth/login/wechatLogin')
 // } else {
 //   window.location.href = encodeURI('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxba710e7a2fd8ba1c&redirect_uri=http://www.chenxiculture.cn&response_type=code&scope=snsapi_userinfo#wechat_redirect')
 // }
