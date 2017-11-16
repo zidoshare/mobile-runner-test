@@ -4,13 +4,11 @@ import { get } from '../../../Util'
 import apiUrl from '../../../apiUrl'
 
 export const loadRoots = () => dispatch => {
-  get(apiUrl.typesUrl).then(json => {
-    if (json.success) {
-      dispatch({
-        type: AUCTION_LOAD_ROOTS,
-        data: json.data,
-      })
-    }
+  get(apiUrl.typesUrl).then(data => {
+    dispatch({
+      type: AUCTION_LOAD_ROOTS,
+      data: data,
+    })
   })
 }
 
@@ -19,23 +17,21 @@ export const loadCommodities = (type, currentPage) => dispatch => {
     currentPage,
     type,
     auction: 1,
-  }).then(json => {
-    if (json.success) {
-      const action = {
-        type: AUCTION_LOAD_COMMODITIES,
-        condition: {
-          type,
-        },
-        data: json.data.records,
-        loading: false,
-      }
-      const page = {
-        ...json.data,
-      }
-      delete page.records
-      action.page = page
-      dispatch(action)
+  }).then(data => {
+    const action = {
+      type: AUCTION_LOAD_COMMODITIES,
+      condition: {
+        type,
+      },
+      data: data.records,
+      loading: false,
     }
+    const page = {
+      ...data,
+    }
+    delete page.records
+    action.page = page
+    dispatch(action)
   })
 }
 

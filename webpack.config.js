@@ -171,7 +171,7 @@ const webpackConfig = {
         }
       }
     }, {
-      test: /\.(png|jpg|gif|svg)$/,
+      test: /\.(png|jpg|gif)$/,
       use: {
         loader: 'url-loader',
         options: {
@@ -179,6 +179,9 @@ const webpackConfig = {
           name: '[name]-[hash:6].[ext]'
         }
       }
+    }, {
+      test: /\.svg$/,
+      loader: 'svg-sprite-loader',
     }, {
       test: /\.css$/,
       use: (handleStyle(extractCss, [

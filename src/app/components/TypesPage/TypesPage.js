@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { Tabs, Button } from 'antd-mobile'
 import { StickyContainer, Sticky } from 'react-sticky'
 import { Link } from 'react-router-dom'
+import StandLink from '../StandLink'
 export default class TypesPage extends Component {
   static propTypes = {
     types: PropTypes.array.isRequired,
@@ -23,18 +24,18 @@ export default class TypesPage extends Component {
     return (<div>
       {tab.commodities ? (
         tab.commodities.length > 0 ? tab.commodities.map((value) => (
-          <Link to={`/commodity/${value.id}`} key={`item-${value.id}`} className="com-list-item">
+          <StandLink to={`/commodity/${value.id}`} style={{}} key={`item-${value.id}`} className="com-list-item">
             <div className="com-list-item-head">{value.title}</div>
             <div style={{ padding: '15px 0' }}>
               <div style={{ textAlign: 'center' }}>
-                <img style={{ height: '120px' }} src={`${value.head}${value.url}`} />
+                <img style={{ width: '100%' }} src={`${value.head}${value.url}`} />
               </div>
               <div style={{ lineHeight: 1 }}>
                 <div style={{ marginBottom: '8px', fontWeight: 'bold' }}>{value.name}</div>
                 <div><span style={{ fontSize: '22px', color: '#FF6E27' }}>¥{value.price}</span></div>
               </div>
             </div>
-          </Link>
+          </StandLink>
         )) :
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 100, background: '#fff' }}>
             <p>暂无数据</p>
@@ -55,7 +56,7 @@ export default class TypesPage extends Component {
     }))
 
     return (
-      <StickyContainer>
+      <StickyContainer ref={(component) => this.stickyComponent = component}>
         <Tabs tabs={tabs} renderTabBar={this.renderTabBar}>
           {this.renderContent}
         </Tabs>

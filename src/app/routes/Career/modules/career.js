@@ -1,44 +1,42 @@
-import {get,handlePage} from '../../../Util'
+import { get, handlePage } from '../../../Util'
 import apiUrl from '../../../apiUrl'
 const CAREER_DATA_LOADING = 'CAREER_DATA_LOADING'
 const RECEIVE_DATA = 'RECEIVE_DATA'
 export const loadData = (condition) => (dispatch) => {
   dispatch({
-    type:CAREER_DATA_LOADING,
-    loading:true,
+    type: CAREER_DATA_LOADING,
+    loading: true,
   })
-  get(apiUrl.selectCareer,condition).then(result => {
+  get(apiUrl.selectCareer, condition).then(data => {
+    const { records } = data
     dispatch({
-      type:CAREER_DATA_LOADING,
-      loading:false,
+      type: RECEIVE_DATA,
+      data: records,
+      pagination: handlePage(data)
     })
-    if(result.success){
-      const {data} = result
-      const {records} = result.data
-      dispatch({
-        type:RECEIVE_DATA,
-        data:records,
-        pagination:handlePage(data)
-      })
-    }
+  }).catch(() => {
+    dispatch({
+      type: CAREER_DATA_LOADING,
+      loading: false,
+    })
   })
 }
 
 
 const ACTION_HANDLERS = {
-  [CAREER_DATA_LOADING]:(state,action) => (Object.assign(state,{
-    loading:action.loading
+  [CAREER_DATA_LOADING]: (state, action) => (Object.assign(state, {
+    loading: action.loading
   })),
-  [RECEIVE_DATA]:(state,action) => (Object.assign(state,{
-    data:action.data,
-    pagination:action.pagination
+  [RECEIVE_DATA]: (state, action) => (Object.assign(state, {
+    data: action.data,
+    pagination: action.pagination
   }))
 }
 
 const initialState = {
-  loading:false,
-  data:[],
-  pagination:handlePage()
+  loading: false,
+  data: [],
+  pagination: handlePage()
 }
 
 export const reducer = (state = initialState, action) => {

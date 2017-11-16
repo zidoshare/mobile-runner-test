@@ -7,22 +7,25 @@ import './finder.less'
 const FlexItem = Flex.Item
 export default class Finder extends Component {
   static propTypes = {
-    auction: PropTypes.object.isRequired,
+    auction: PropTypes.object,
   }
 
   render() {
-    const { endTime, imageUrl } = this.props.auction
+    const { auction } = this.props
     return (
       <WingBlank size="sm">
         <Flex className="finder-container">
           <FlexItem className="finder-item-container right-line">
-            <StandLink to="/auction">
+            {auction ? <StandLink to="/auction">
               <h5>专场拍卖</h5>
-              <p><Timer endTime={endTime} /></p>
+              <p><Timer endTime={auction.endTime} /></p>
               <div>
-                <img src={imageUrl} />
+                <img src={auction.imageUrl} />
               </div>
-            </StandLink>
+            </StandLink> : <div>
+                <p>暂无拍卖会</p>
+                <p>敬请期待</p>
+              </div>}
           </FlexItem>
           <div className="finder-item-container right-panel">
             <StandLink to="/commodities">
@@ -33,7 +36,7 @@ export default class Finder extends Component {
                   <p>你值得拥有</p>
                 </FlexItem>
                 <FlexItem>
-                  <img src='http://odp22tnw6.bkt.clouddn.com/2017/10/11/163dcfc6-58aa-4466-adcc-66ce761e6e57.jpg' />
+                  <img src='http://odp22tnw6.bkt.clouddn.com/v2/ccas/img-store.png' />
                 </FlexItem>
               </Flex>
             </StandLink>

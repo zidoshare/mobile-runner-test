@@ -13,6 +13,7 @@ import PersonInfo from './routes/PersonInfo'
 import Auction from './routes/Auctions'
 import './style/core.scss'
 import MyAddress from './routes/MyAddress'
+import Follow from './routes/Follow'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -32,6 +33,7 @@ export default class App extends React.Component {
             <Route path="/personInfo" component={PersonInfo} />
             <Route path="/address" component={MyAddress} />
             <Route path="/auction" component={Auction} />
+            <Follow path="/follow" component={Follow} />
           </Switch>
         </ConnectedRouter>
       </Provider>

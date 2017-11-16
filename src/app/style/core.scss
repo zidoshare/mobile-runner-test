@@ -35,10 +35,6 @@
   }
 }
 
-#root{
-  height:100vh;
-}
-
 .ellipsis{
   overflow: hidden;
   text-overflow:ellipsis;
@@ -51,4 +47,10 @@
 
 .far-left{
   margin-left: 10px;
+}
+
+.no-data{
+  font-size:14px;
+  color:#999;
+  text-align: center;
 }

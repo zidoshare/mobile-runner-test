@@ -15,39 +15,37 @@ export default class MyAuction extends Component {
     return get(apiUrl.commoditiesUrl, {
       currentPage,
       type,
-    }).then(json => {
-      if (json.success) {
-        const types = this.state.types
+    }).then(data => {
+      const types = this.state.types
 
-        const action = {
-          condition: {
-            type,
-          },
-          data: json.data.records,
-        }
-        const page = {
-          ...json.data,
-        }
-        delete page.records
-        action.page = page
+      const action = {
+        condition: {
+          type,
+        },
+        data: data.records,
+      }
+      const page = {
+        ...data,
+      }
+      delete page.records
+      action.page = page
 
-        const result = types.find(item => item.id === type.id)
-        if (!result) {
-          return
+      const result = types.find(item => item.id === type.id)
+      if (!result) {
+        return
+      }
+      if (!result.page || action.page.current > result.page.current) {
+        if (!result.commodities) {
+          result.commodities = []
         }
-        if (!result.page || action.page.current > result.page.current) {
-          if (!result.commodities) {
-            result.commodities = []
-          }
-          result.commodities = result.commodities.concat(action.data)
-          result.page = action.page
-          result.initialed = true
-          result.hasMore = (action.page.current < action.page.pages - 1)
-          this.setState({
-            types: [...types]
-          })
-          return
-        }
+        result.commodities = result.commodities.concat(action.data)
+        result.page = action.page
+        result.initialed = true
+        result.hasMore = (action.page.current < action.page.pages - 1)
+        this.setState({
+          types: [...types]
+        })
+        return
       }
     })
   }

@@ -34,7 +34,7 @@ export default class Recommends extends Component {
           </h3>
           </div>
           <FlexItem>
-            <Slider {...settings}>
+            {recommends.length > 0 ? <Slider {...settings}>
               {recommends.map((value, index) => (
                 <div key={'recom' + index}>
                   <Link to={`/commodity/${value.id}`}>
@@ -45,7 +45,7 @@ export default class Recommends extends Component {
                   </Link>
                 </div>
               ))}
-            </Slider>
+            </Slider> : <p className="no-data">暂无数据</p>}
           </FlexItem>
         </Flex>
       </WingBlank>

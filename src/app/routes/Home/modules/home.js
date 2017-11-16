@@ -9,19 +9,17 @@ export const loadBanner = () => dispatch => {
     type: HOME_LOAD_BANNER,
     bannerLoading: true,
   })
-  get(apiUrl.bannerUrl).then(json => {
-    if (json.success) {
-      dispatch({
-        type: HOME_LOAD_BANNER,
-        banner: json.data,
-        bannerLoading: false,
-      })
-    } else {
-      dispatch({
-        type: HOME_LOAD_BANNER,
-        bannerLoading: false,
-      })
-    }
+  get(apiUrl.bannerUrl).then(data => {
+    dispatch({
+      type: HOME_LOAD_BANNER,
+      banner: data,
+      bannerLoading: false,
+    })
+  }).catch(() => {
+    dispatch({
+      type: HOME_LOAD_BANNER,
+      bannerLoading: false,
+    })
   })
 }
 
@@ -30,19 +28,17 @@ export const loadAuctions = () => dispatch => {
     type: HOME_LOAD_AUCTIONS,
     auctionLoading: true,
   })
-  get(apiUrl.auctionUrl).then(json => {
-    if (json.success) {
-      dispatch({
-        type: HOME_LOAD_AUCTIONS,
-        auctionLoading: false,
-        auction: json.data,
-      })
-    } else {
-      dispatch({
-        type: HOME_LOAD_AUCTIONS,
-        auctionLoading: false,
-      })
-    }
+  get(apiUrl.auctionUrl).then(data => {
+    dispatch({
+      type: HOME_LOAD_AUCTIONS,
+      auctionLoading: false,
+      auction: data,
+    })
+  }).catch(() => {
+    dispatch({
+      type: HOME_LOAD_AUCTIONS,
+      auctionLoading: false,
+    })
   })
 }
 
@@ -51,19 +47,17 @@ export const loadRecommeds = () => dispatch => {
     type: HOME_LOAD_RECOMMENDS,
     recommendsLoading: true
   })
-  get(apiUrl.commoditiesUrl).then(json => {
-    if (json.success) {
-      dispatch({
-        type: HOME_LOAD_RECOMMENDS,
-        recommendsLoading: false,
-        recommends: json.data.records,
-      })
-    } else {
-      dispatch({
-        type: HOME_LOAD_RECOMMENDS,
-        recommendsLoading: false,
-      })
-    }
+  get(apiUrl.commoditiesUrl).then(data => {
+    dispatch({
+      type: HOME_LOAD_RECOMMENDS,
+      recommendsLoading: false,
+      recommends: data.records,
+    })
+  }).catch(() => {
+    dispatch({
+      type: HOME_LOAD_RECOMMENDS,
+      recommendsLoading: false,
+    })
   })
 }
 
@@ -72,19 +66,17 @@ export const loadWinning = () => dispatch => {
     type: HOME_LOAD_WINNING,
     winnersLoading: true
   })
-  get(apiUrl.winnersUrl).then(json => {
-    if (json.success) {
-      dispatch({
-        type: HOME_LOAD_WINNING,
-        winnersLoading: false,
-        winners: json.data,
-      })
-    } else {
-      dispatch({
-        type: HOME_LOAD_WINNING,
-        winnersLoading: false,
-      })
-    }
+  get(apiUrl.winnersUrl).then(data => {
+    dispatch({
+      type: HOME_LOAD_WINNING,
+      winnersLoading: false,
+      winners: data,
+    })
+  }).catch(() => {
+    dispatch({
+      type: HOME_LOAD_WINNING,
+      winnersLoading: false,
+    })
   })
 }
 

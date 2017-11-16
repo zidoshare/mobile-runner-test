@@ -5,9 +5,15 @@ import './PersonInfo.less'
 import { List, InputItem, Picker, Button, WhiteSpace, NoticeBar, ActivityIndicator, Toast } from 'antd-mobile'
 import BindPhoneModal from '../../components/BindPhoneModal'
 import { createForm } from 'rc-form'
-import { get, patterns } from '../../Util'
+import { get } from '../../Util'
 import apiUrl from '../../apiUrl'
 const ListItem = List.Item
+
+const sexs = [
+  '女',
+  '男',
+  '未知',
+]
 class PersonInfo extends Component {
   static propTypes = {
     history: PropTypes.object.isRequired,
@@ -35,17 +41,11 @@ class PersonInfo extends Component {
     this.setState({
       loading: true,
     })
-    get(apiUrl.myMsgUrl).then(json => {
-      if (json.success) {
-        this.setState({
-          loading: false,
-          info: json.data,
-        })
-      } else {
-        //TODO 获取登录路径并跳转到登录页
-        Toast.fail('获取用户信息失败')
-        this.props.history.push('/')
-      }
+    get(apiUrl.myMsgUrl).then(data => {
+      this.setState({
+        loading: false,
+        info: data,
+      })
     })
   }
   handleBindPhone = () => {
@@ -77,6 +77,7 @@ class PersonInfo extends Component {
       setting.title = '修改信息'
       setting.icon = null
     }
+    console.log(info)
     return (
       <div>
         <ActivityIndicator
@@ -100,38 +101,23 @@ class PersonInfo extends Component {
               placeholder="点击输入昵称"
               ref={el => this.autoFocusInst = el}
             >昵称</InputItem>
-            <Picker data={[{ value: 0, label: '男' }, { value: 1, label: '女' }]} cols={1} {...getFieldProps('gender', {
-              initialValue: `${info.gender}`
-            }) } className="forss">
+            <Picker data={[{ value: '0', label: '男' }, { value: '1', label: '女' }]} cols={1} {...getFieldProps('gender', {
+              initialValue: info.gender
+            }) }>
               <ListItem arrow="horizontal">性别</ListItem>
             </Picker>
-            <InputItem
-              {...getFieldProps('phone', {
-                rules: [{
-                  required: true,
-                  message: '请输入手机号码'
-                }, {
-                  pattern: patterns.phoneNumber,
-                  message: '请输入正确的手机号码',
-                }],
-                initialValue: `${info.phone}`
-              }) }
-              clear
-              placeholder="点击输入手机号"
-              ref={el => this.autoFocusInst = el}
-            >手机号</InputItem>
             <WhiteSpace size="md" />
             <Button type="primary">确认修改</Button>
           </List> : <List>
               <ListItem extra={
-                <div className="person-list-avatar pull-right" />
+                <div className="person-list-avatar pull-right" style={{ backgroundImage: `url(${info.headportrait})` }} />
               }>
                 头像
             </ListItem>
               <ListItem extra={`${info.nickname}`}>
                 昵称
             </ListItem>
-              <ListItem extra={`${info.gender}`}>
+              <ListItem extra={sexs[Number(info.gender)]}>
                 性别
             </ListItem>
               <ListItem extra={info.phone ? `${info.phone}` : '点击绑定'} onClick={this.handleBindPhone}>

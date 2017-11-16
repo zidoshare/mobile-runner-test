@@ -49,6 +49,7 @@
     "rimraf": "^2.6.1",
     "sass-loader": "^6.0.3",
     "style-loader": "^0.13.2",
+    "svg-sprite-loader": "^0.3.0",
     "url-loader": "^0.5.8",
     "webpack": "^2.2.1",
     "webpack-bundle-analyzer": "^2.9.0",
@@ -70,7 +71,8 @@
     "slick-carousel": "^1.8.1"
   },
   "theme": {
-    "brand-primary": "#FF6666"
+    "brand-primary": "#FF6666",
+    "primary-button-fill-tap": "#ff3333"
   },
   "repository": {
     "type": "git",

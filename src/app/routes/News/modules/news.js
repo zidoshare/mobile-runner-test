@@ -7,20 +7,19 @@ export const loadData = (condition) => (dispatch) => {
     type:NEWS_DATA_LOADING,
     loading:true,
   })
-  get(apiUrl.selectCareer,condition).then(result => {
+  get(apiUrl.selectCareer,condition).then(data => {
+    const {records} = data
+    dispatch({
+      type:RECEIVE_DATA,
+      data:records,
+      pagination:handlePage(data),
+      loading:false,
+    })
+  }).catch(() => {
     dispatch({
       type:NEWS_DATA_LOADING,
       loading:false,
     })
-    if(result.success){
-      const {data} = result
-      const {records} = result.data
-      dispatch({
-        type:RECEIVE_DATA,
-        data:records,
-        pagination:handlePage(data)
-      })
-    }
   })
 }
 
@@ -31,7 +30,8 @@ const ACTION_HANDLERS = {
   })),
   [RECEIVE_DATA]:(state,action) => (Object.assign(state,{
     data:action.data,
-    pagination:action.pagination
+    pagination:action.pagination,
+    loading:action.loading,
   }))
 }
 

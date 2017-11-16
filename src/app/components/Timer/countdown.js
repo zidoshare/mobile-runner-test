@@ -34,7 +34,7 @@ class DownDate {
     /s/,
   ]
   formart(fmt = 'dd天hh:mm:ss') {
-    return fmt.replace('dd', this.days).replace('hh', this.hours).replace('mm', this.minutes).replace('ss', this.seconds)
+    return fmt.replace('dd', leftPad(this.days)).replace('hh', leftPad(this.hours)).replace('mm', leftPad(this.minutes)).replace('ss', leftPad(this.seconds))
   }
 }
 

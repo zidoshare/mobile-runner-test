@@ -21,6 +21,7 @@ export default class Timer extends React.Component {
   }
   runTimer() {
     if (this.state.id == null) {
+      this.timer()
       this.setState({
         id: window.setInterval(this.timer.bind(this), 1000)
       })

@@ -1,24 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { AppContainer } from 'react-hot-loader'
-// import {get} from './app/Util'
+import { get } from './app/Util'
+import apiUrl from './app/apiUrl'
+import { Toast } from 'antd-mobile'
 const Root = document.getElementById('root')
 
-// function getQueryString(name) {
-//   var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i')
-//   var result = window.location.search.substr(1).match(reg)
-//   if (result != null) {
-//     return result[2]
-//   } else {
-//     return null
-//   }
-// }
-// let code = getQueryString('code')
-// if (code) {
-//   get('/api/auth/login/wechatLogin')
-// } else {
-//   window.location.href = encodeURI('https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxba710e7a2fd8ba1c&redirect_uri=http://www.chenxiculture.cn&response_type=code&scope=snsapi_userinfo#wechat_redirect')
-// }
 
 
 let render = () => {
@@ -65,4 +52,27 @@ if (!(process.env.NODE_ENV === 'development')) {
 //     })
 // }
 
-render()
+function getQueryString(name) {
+  var reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)', 'i')
+  var result = window.location.search.substr(1).match(reg)
+  if (result != null) {
+    return result[2]
+  } else {
+    return null
+  }
+}
+let code = getQueryString('code')
+let state = getQueryString('state')
+if (code && state) {
+  get(apiUrl.wechatLogin, {
+    code,
+    state,
+  }).then(() => {
+    render()
+  })
+} else if (state || code) {
+  Toast.fail('登录异常')
+  window.location.href = '/'
+} else {
+  render()
+}

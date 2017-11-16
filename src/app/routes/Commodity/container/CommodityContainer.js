@@ -7,7 +7,7 @@ import { WhiteSpace, List, InputItem, ActivityIndicator, Flex, Button, Picker } 
 const FlexItem = Flex.Item
 const ListItem = List.Item
 import { connect } from 'react-redux'
-import { loadCommodity, loadDetail, loadInfo } from '../modules/commodity'
+import { loadCommodity, loadDetail, loadInfo, submit } from '../modules/commodity'
 import { createForm } from 'rc-form'
 import './commodity.less'
 class CommodityContainer extends Component {
@@ -18,6 +18,13 @@ class CommodityContainer extends Component {
     form: PropTypes.object.isRequired,
     loadInfo: PropTypes.func.isRequired,
     loadDetail: PropTypes.func.isRequired,
+    submit: PropTypes.func.isRequired,
+  }
+  constructor(props) {
+    super(props)
+    this.state = {
+      val: 3,
+    }
   }
 
   componentDidMount() {
@@ -26,34 +33,45 @@ class CommodityContainer extends Component {
     this.props.loadInfo(id)
     this.props.loadDetail(id)
   }
+  onChange = (val) => {
+    // console.log(val);
+    this.setState({ val })
+  }
+  handleSubmit = () => {
+    this.props.form.validateFields((error) => {
+      if (!error) {
+        const { commodity } = this.props.com
+        this.props.submit(commodity.id, this.props.form.getFieldValue('money'), commodity.price)
+      }
+    })
 
+  }
   render() {
     const { commodity, loading, infoLoading, info, detailLoading, detail } = this.props.com
     const { getFieldProps } = this.props.form
-    
+
     return (
       <div className="commodity-container">
         {!loading ? <div>
-          <ChildNavBar title={commodity.name} />
+          <ChildNavBar title={commodity.name} toHome={true} />
           <div className="commodity-content-wrapper">
             <Banner banner={commodity.images.map(value => (`${value.head}${value.url}`))} />
-            <WhiteSpace size="sm" />
             <div className="com-op-container">
               <List>
                 <ListItem>
                   <Flex>
-                    <FlexItem className="ellipsis"><h4>{commodity.name}</h4></FlexItem>
-                    <FlexItem className="ellipsis">倒计时：<Timer endTime={commodity.endTime} /></FlexItem>
+                    <FlexItem className="ellipsis"><span>{commodity.name}</span></FlexItem>
+                    <FlexItem className="ellipsis" style={{ fontSize: 12 }}>距结束：<Timer endTime={commodity.endTime} /></FlexItem>
                   </Flex>
                 </ListItem>
                 <ListItem>
                   <Flex>
-                    <FlexItem><h5 className="ellipsis">当前价：￥{commodity.price}</h5></FlexItem>
-                    <FlexItem className="ellipsis">出价{commodity.competition}次</FlexItem>
+                    <FlexItem><span className="ellipsis">当前价：￥{commodity.price}</span></FlexItem>
+                    <FlexItem className="ellipsis no-data">出价{commodity.competition}次</FlexItem>
                   </Flex>
                 </ListItem>
                 <InputItem
-                  {...getFieldProps('money2', {
+                  {...getFieldProps('money', {
                     normalize: (v, prev) => {
                       if (v && !/^(([1-9]\d*)|0)(\.\d{0,2}?)?$/.test(v)) {
                         if (v === '.') {
@@ -65,21 +83,22 @@ class CommodityContainer extends Component {
                     },
                   }) }
                   type='money'
-                  placeholder="请输入加价金额"
-                  ref={el => this.customFocusInst = el}
+                  placeholder="点击输入加价金额"
                   clear
                 >加价金额</InputItem>
                 <ListItem>
-                  <Picker data={commodity.basePrice.split(',').map(value=>({
-                    value:value,
-                    label:'加价'+value+'元',
-                  }))} cols={1} {...getFieldProps('district3') } className="forss">
-                    <ListItem arrow="horizontal">选择加价金额</ListItem>
-                  </Picker>
+                  <Button type="primary" onClick={this.handleSubmit}>加价竞拍</Button>
                 </ListItem>
-                <ListItem>
-                  <Button type="primary">加价竞拍</Button>
-                </ListItem>
+                <Picker data={commodity.basePrice.split(',').map(value => ({
+                  value: value,
+                  label: '加价' + value + '元',
+                }))} cols={1} className="forss" onChange={(val) => {
+                  this.props.form.setFieldsValue({
+                    money: val
+                  })
+                }}>
+                  <ListItem arrow="horizontal">快捷加价</ListItem>
+                </Picker>
                 <ListItem>
                   <h2>
                     拍品信息
@@ -120,6 +139,7 @@ const mapDispatchToProps = {
   loadCommodity,
   loadDetail,
   loadInfo,
+  submit,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(createForm()(CommodityContainer))

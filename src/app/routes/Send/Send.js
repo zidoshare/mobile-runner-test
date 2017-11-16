@@ -18,16 +18,15 @@ class Send extends Component {
     }
   }
   componentDidMount() {
-    get(apiUrl.typesUrl).then(json => {
-      if (json.success)
-        this.setState({
-          types: json.data.map(value => {
-            return {
-              value: value.id,
-              label: value.name,
-            }
-          }),
-        })
+    get(apiUrl.typesUrl).then(data => {
+      this.setState({
+        types: data.map(value => {
+          return {
+            value: value.id,
+            label: value.name,
+          }
+        }),
+      })
     })
   }
   render() {

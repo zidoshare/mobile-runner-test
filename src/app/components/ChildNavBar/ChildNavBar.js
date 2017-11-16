@@ -1,6 +1,7 @@
 import { NavBar, Icon, ActionSheet } from 'antd-mobile'
 import React from 'react'
 import PropTypes from 'prop-types'
+import CustomIcon from '../CustomIcon'
 import { withRouter } from 'react-router-dom'
 const isIPhone = new RegExp('\\biPhone\\b|\\biPod\\b', 'i').test(window.navigator.userAgent)
 let wrapProps
@@ -19,11 +20,13 @@ class ChildNavBar extends React.Component {
     onLeftClick: PropTypes.func,
     onSearch: PropTypes.func,
     style: PropTypes.object,
+    toHome: PropTypes.bool.isRequired,
   }
   static defaultProps = {
     icon: <Icon type="left" />,
     mode: 'light',
     fix: true,
+    toHome: false,
   }
   constructor(props) {
     super(props)
@@ -54,6 +57,10 @@ class ChildNavBar extends React.Component {
         this.setState({ clicked: buttonIndex > -1 ? this.dataList[buttonIndex].title : 'cancel' })
       })
   }
+
+  toHome = () => {
+    this.props.history.push('/')
+  }
   render() {
     const { title, rightContent, icon, mode, onLeftClick, fix } = { ...this.props }
     const rc = [
@@ -74,10 +81,14 @@ class ChildNavBar extends React.Component {
         zIndex: 999,
       }
     }
+    let resultRightContent = rightContent || rc
+    if (this.props.toHome) {
+      resultRightContent = [<CustomIcon onClick={this.toHome} style={{ marginRight: 15  }} type={require('../../../image/home.svg')} key="nav-to-home" />].concat(resultRightContent)
+    }
     return <div>
       <NavBar
         {...props}
-        rightContent={rightContent || rc}
+        rightContent={resultRightContent}
         onLeftClick={props.icon ? this.props.history.goBack : null}
       >{title}</NavBar>
     </div>

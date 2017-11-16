@@ -12,10 +12,7 @@ const PersonNav = [{
 }, {
   icon: 'http://odp22tnw6.bkt.clouddn.com/v2/ccas/icon-collection.png',
   text: '我的收藏',
-  toast: {
-    type: 'fail',
-    text: '暂未开放',
-  }
+  path:'/follow'
 }, {
   icon: 'http://odp22tnw6.bkt.clouddn.com/v2/ccas/icon-my-auction.png',
   text: '我的拍卖',
@@ -77,22 +74,11 @@ export default class Person extends Component {
     this.setState({
       loading: true,
     })
-    get(apiUrl.myMsgUrl).then(json => {
-      if (json.success) {
-        this.setState({
-          loading: false,
-          info: json.data,
-        })
-      } else {
-        //TODO 获取登录路径并跳转到登录页
-        get(apiUrl.wechatLoginUrl, {
-          operate: 'http://api.chuangyuandi.net.cn/person',
-        }).then(json => {
-          if (json.success) {
-            window.location.href = json.data
-          }
-        })
-      }
+    get(apiUrl.myMsgUrl).then(data => {
+      this.setState({
+        loading: false,
+        info: data,
+      })
     })
   }
 
@@ -123,7 +109,7 @@ export default class Person extends Component {
     const { info } = this.state
     return (
       <div className="person-container">
-        <ChildNavBar title="个人中心" style={this.state.navStyle} rightContent={[]} />
+        <ChildNavBar title="个人中心" style={this.state.navStyle} rightContent={[]} toHome={false} />
         <div>
           <ActivityIndicator
             toast
@@ -133,9 +119,9 @@ export default class Person extends Component {
           <div className="head-container">
             <div className="random-bg-container">
             </div>
-            <div className="head-ins" style={{ backgroundImage: `${info.headportrait}` }}>
-              <div className="head-name-panel ellipsis">{info.nickname}</div>
+            <div className="head-ins" style={{ backgroundImage: `url(${info.headportrait})` }}>
             </div>
+            <div className="head-name-panel ellipsis">{info.nickname}</div>
           </div>
         </div>
         <Grid data={PersonNav} columnNum={3} onClick={this.goto} hasLine renderItem={(el, index) => (
