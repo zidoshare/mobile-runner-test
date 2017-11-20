@@ -17,5 +17,8 @@ export default {
   delAddressUrl: '/api/v1/receivingInfo/del',
   updateAddressUrl: '/api/v1/receivingInfo/update',
   setDefaultAddressUrl: '/api/v1/receivingInfo/setDefault',
-  followListUrl: '/api/v1/bidders/getFollowList'
+  followListUrl: '/api/v1/bidders/getFollowList',
+  followUrl: '/api/v1/commodity/follow',
+  unFollowUrl: '/api/v1/commodity/unFollow',
+  showFollowUrl: '/api/v1/bidders/followMsg',
 }

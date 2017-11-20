@@ -5,6 +5,11 @@ import apiUrl from '../../../apiUrl'
 
 export const loadRoots = () => dispatch => {
   get(apiUrl.typesUrl).then(data => {
+    data = data.map(t => {
+      t.loading = true
+      loadCommodities(t.id, 1)(dispatch)
+      return t
+    })
     dispatch({
       type: COM_LOAD_ROOTS,
       data,
@@ -13,6 +18,14 @@ export const loadRoots = () => dispatch => {
 }
 
 export const loadCommodities = (type, currentPage) => dispatch => {
+  dispatch({
+    type: COM_LOAD_COMMODITIES,
+    condition: {
+      type,
+    },
+    loading: true,
+    initialed: true,
+  })
   return get(apiUrl.commoditiesUrl, {
     currentPage,
     type,
@@ -24,6 +37,7 @@ export const loadCommodities = (type, currentPage) => dispatch => {
       },
       data: data.records,
       loading: false,
+      initialed: true,
     }
     const page = {
       ...data,
@@ -41,6 +55,12 @@ const ACTION_HANDLERS = {
     if (!result) {
       return state
     }
+    if (action.loading) {
+      result.loading = action.loading
+      return {
+        types: [...state.types]
+      }
+    }
     if (!result.page || action.page.current > result.page.current) {
       if (!result.commodities) {
         result.commodities = []
@@ -49,6 +69,19 @@ const ACTION_HANDLERS = {
       result.page = action.page
       result.initialed = true
       result.hasMore = (action.page.current < action.page.pages - 1)
+      result.loading = action.loading
+      return {
+        types: [...state.types]
+      }
+    } else if (action.page.current <= result.page.current) {
+      if (!result.commodities) {
+        result.commodities = []
+      }
+      result.commodities = action.data
+      result.page = action.page
+      result.initialed = true
+      result.hasMore = (action.page.current < action.page.pages - 1)
+      result.loading = action.loading
       return {
         types: [...state.types]
       }

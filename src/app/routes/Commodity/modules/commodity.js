@@ -5,6 +5,7 @@ import { transBeginTo } from '../../../reducers'
 const COM_LOAD_BASE = 'COM_LOAD_BASE'
 const COM_LOAD_INFO = 'COM_LOAD_INFO'
 const COM_SUBMIT_ADD = 'COM_SUBMIT_ADD'
+const UPDATE_FOLLOW = 'UPDATE_FOLLOW'
 
 export const loadCommodity = (id) => dispatch => {
   dispatch({
@@ -101,14 +102,49 @@ export const submit = (commodityId, addPrice, currentPrice) => dispatch => {
   })
 }
 
+export const loadFollow = (commodityId) => dispatch => {
+  get(apiUrl.showFollowUrl + `?commodityId=${commodityId}`).then((data) => {
+    dispatch({
+      type: UPDATE_FOLLOW,
+      isFollow: data.follow,
+    })
+  })
+}
+
+export const follow = (commodityId) => dispatch => {
+  dispatch({
+    type: UPDATE_FOLLOW,
+    isFollow: true,
+  })
+  post(apiUrl.followUrl + `?commodityId=${commodityId}`).catch(() => {
+    dispatch({
+      type: UPDATE_FOLLOW,
+      isFollow: false,
+    })
+  })
+}
+export const unFollow = (commodityId) => dispatch => {
+  dispatch({
+    type: UPDATE_FOLLOW,
+    isFollow: false,
+  })
+  post(apiUrl.unFollowUrl + `?commodityId=${commodityId}`).catch(() => {
+    dispatch({
+      type: UPDATE_FOLLOW,
+      isFollow: true,
+    })
+  })
+}
 const ACTION_HANDLERS = {
   [COM_LOAD_BASE]: (state, action) => ({ ...state, ...action }),
   [COM_LOAD_INFO]: (state, action) => ({ ...state, ...action }),
   [COM_SUBMIT_ADD]: (state, action) => ({ ...state, ...action }),
+  [UPDATE_FOLLOW]: (state, action) => ({ ...state, ...action }),
 }
 
 const initialState = {
   loading: true,
+  isFollow: false,
 }
 
 export default (state = initialState, action) => {

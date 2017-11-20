@@ -23,17 +23,18 @@ export default class Banner extends Component {
       adaptiveHeight: true,
     }
     const bannerList = banner.map((ii, index) => (
-      <div key={'banner' + index}>
+      <div key={'banner' + index} className="banner-item-container">
         <img src={ii} />
       </div>
     ))
     return (
       <div>
-        <Slider
+        {bannerList.length > 0 ? <Slider
           {...settings}
         >
           {bannerList}
-        </Slider>
+        </Slider> : null}
+
       </div>
     )
   }

@@ -14,7 +14,7 @@ class CommoditiesContainer extends Component {
     history: PropTypes.object.isRequired,
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.loadRoots()
   }
 

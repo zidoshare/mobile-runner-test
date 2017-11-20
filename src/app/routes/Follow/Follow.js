@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { loadCommodities } from './modules'
 import ChildNavBar from '../../components/ChildNavBar'
 import { Link } from 'react-router-dom'
+import CommoditiesList from '../../components/CommoditiesList'
 import './Follow.less'
 class Follow extends Component {
   static propTypes = {
@@ -15,26 +16,21 @@ class Follow extends Component {
     this.props.loadCommodities()
   }
   render() {
-    const { commodities } = this.props.follow
+    const { commodities, hasMore, loading, page } = this.props.follow
+    const setting = {
+      dataSource: commodities || [],
+      hasMore: hasMore == null ? false : hasMore,
+      loadDataSource: this.props.loadCommodities.bind(this),
+      loading: loading,
+      page: page || {},
+    }
+
     return (
       <div className="follow-container">
         <ChildNavBar title="我的收藏" rightContent={[]} />
         <div className="follow-content-wrapper">
-          {commodities.map(value => (
-            <Link to={`/commodity/${value.id}`} key={`item-${value.id}`} className="com-list-item">
-              <div className="com-list-item-head">{value.title}</div>
-              <div style={{ padding: '15px 0' }}>
-                <div style={{ textAlign: 'center' }}>
-                  <img style={{ height: '120px' }} src={`${value.head}${value.url}`} />
-                </div>
-                <div style={{ lineHeight: 1 }}>
-                  <div style={{ marginBottom: '8px', fontWeight: 'bold' }}>{value.name}</div>
-                  <div><span style={{ fontSize: '22px', color: '#FF6E27' }}>¥{value.price}</span></div>
-                </div>
-              </div>
-            </Link>
-          ))}
-          {commodities.length === 0 ? <div className="no-data">
+          <CommoditiesList {...setting} />
+          {commodities.length === 0 && !loading ? <div className="no-data">
             <br />
             还没有收藏？赶紧去逛逛吧
             <br />

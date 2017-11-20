@@ -4,7 +4,6 @@ import TypesPage from '../../../components/TypesPage'
 import { connect } from 'react-redux'
 import { loadCommodities, loadTypes, loadRoots } from '../modules/commodities'
 import ChildNavBar from '../../../components/ChildNavBar'
-import './commodities.less'
 
 class CommoditiesContainer extends Component {
   static propTypes = {

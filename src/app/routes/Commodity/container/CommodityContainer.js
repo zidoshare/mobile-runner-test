@@ -3,12 +3,13 @@ import PropTypes from 'prop-types'
 import Banner from '../../../components/Banner'
 import ChildNavBar from '../../../components/ChildNavBar'
 import Timer from '../../../components/Timer'
-import { WhiteSpace, List, InputItem, ActivityIndicator, Flex, Button, Picker } from 'antd-mobile'
+import { List, InputItem, ActivityIndicator, Flex, Button, Picker } from 'antd-mobile'
 const FlexItem = Flex.Item
 const ListItem = List.Item
 import { connect } from 'react-redux'
-import { loadCommodity, loadDetail, loadInfo, submit } from '../modules/commodity'
+import { loadCommodity, loadDetail, loadInfo, submit, follow, unFollow, loadFollow } from '../modules/commodity'
 import { createForm } from 'rc-form'
+import CustomIcon from '../../../components/CustomIcon'
 import './commodity.less'
 class CommodityContainer extends Component {
   static propTypes = {
@@ -19,6 +20,9 @@ class CommodityContainer extends Component {
     loadInfo: PropTypes.func.isRequired,
     loadDetail: PropTypes.func.isRequired,
     submit: PropTypes.func.isRequired,
+    follow: PropTypes.func.isRequired,
+    unFollow: PropTypes.func.isRequired,
+    loadFollow: PropTypes.func.isRequired,
   }
   constructor(props) {
     super(props)
@@ -32,6 +36,7 @@ class CommodityContainer extends Component {
     this.props.loadCommodity(id)
     this.props.loadInfo(id)
     this.props.loadDetail(id)
+    this.props.loadFollow(id)
   }
   onChange = (val) => {
     // console.log(val);
@@ -46,8 +51,19 @@ class CommodityContainer extends Component {
     })
 
   }
+
+  updateFollow = () => {
+    const { follow, unFollow } = this.props
+    const { isFollow } = this.props.com
+    const { commodity } = this.props.com
+    if (isFollow) {
+      unFollow(commodity.id)
+    } else {
+      follow(commodity.id)
+    }
+  }
   render() {
-    const { commodity, loading, infoLoading, info, detailLoading, detail } = this.props.com
+    const { commodity, loading, infoLoading, info, detailLoading, detail,isFollow } = this.props.com
     const { getFieldProps } = this.props.form
 
     return (
@@ -55,21 +71,24 @@ class CommodityContainer extends Component {
         {!loading ? <div>
           <ChildNavBar title={commodity.name} toHome={true} />
           <div className="commodity-content-wrapper">
-            <Banner banner={commodity.images.map(value => (`${value.head}${value.url}`))} />
+            <Banner banner={commodity.images.length > 0 ?commodity.images.map(value => (`${value.head}${value.url}`)):['http://odp22tnw6.bkt.clouddn.com/v2/ccas/default-no-pic.png']}/>
             <div className="com-op-container">
+              <Flex className="title-line">
+                <FlexItem><span>{commodity.name}</span></FlexItem>
+                <FlexItem style={{ fontSize: 12, whiteSpace: 'nowrap' }}>距结束：<Timer endTime={commodity.endTime} /></FlexItem>
+                <div className="ic-text-btn" onClick={this.updateFollow}>
+                  <CustomIcon type={isFollow?require('../../../../image/start-yes.svg'):require('../../../../image/start-no.svg')} />
+                  <span>收藏</span>
+                </div>
+              </Flex>
+              <Flex className="title-line">
+                <FlexItem><span className="ellipsis">当前价格：<span className="money color-primary">{commodity.price}</span></span></FlexItem>
+                <FlexItem className="ellipsis no-data">出价{commodity.competition}次</FlexItem>
+              </Flex>
+              <div className="c-title-line">
+                <span className="ellipsis">保证金：<span className="money color-primary">{commodity.bond}</span></span>
+              </div>
               <List>
-                <ListItem>
-                  <Flex>
-                    <FlexItem className="ellipsis"><span>{commodity.name}</span></FlexItem>
-                    <FlexItem className="ellipsis" style={{ fontSize: 12 }}>距结束：<Timer endTime={commodity.endTime} /></FlexItem>
-                  </Flex>
-                </ListItem>
-                <ListItem>
-                  <Flex>
-                    <FlexItem><span className="ellipsis">当前价：￥{commodity.price}</span></FlexItem>
-                    <FlexItem className="ellipsis no-data">出价{commodity.competition}次</FlexItem>
-                  </Flex>
-                </ListItem>
                 <InputItem
                   {...getFieldProps('money', {
                     normalize: (v, prev) => {
@@ -140,6 +159,9 @@ const mapDispatchToProps = {
   loadDetail,
   loadInfo,
   submit,
+  follow,
+  unFollow,
+  loadFollow,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(createForm()(CommodityContainer))

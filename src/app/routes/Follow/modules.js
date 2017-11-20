@@ -2,29 +2,26 @@ const FOLLOW_LOAD_COMMODITIES = 'FOLLOW_LOAD_COMMODITIES'
 import { get } from '../../Util'
 import apiUrl from '../../apiUrl'
 
-export const loadCommodities = (currentPage) => (dispatch, getState) => {
-
-  if (!getState().page || currentPage > getState().page.current) {
-    dispatch({
+export const loadCommodities = (currentPage) => (dispatch) => {
+  dispatch({
+    type: FOLLOW_LOAD_COMMODITIES,
+    loading: true,
+  })
+  return get(apiUrl.followListUrl, {
+    currentPage,
+  }).then(data => {
+    const action = {
       type: FOLLOW_LOAD_COMMODITIES,
-      loading: true,
-    })
-    return get(apiUrl.followListUrl, {
-      currentPage,
-    }).then(data => {
-      const action = {
-        type: FOLLOW_LOAD_COMMODITIES,
-        commodities: data.records,
-        loading: false,
-      }
-      const page = {
-        ...data,
-      }
-      delete page.records
-      action.page = page
-      dispatch(action)
-    })
-  }
+      commodities: data.records,
+      loading: false,
+    }
+    const page = {
+      ...data,
+    }
+    delete page.records
+    action.page = page
+    dispatch(action)
+  })
 }
 
 const ACTION_HANDLERS = {
@@ -37,11 +34,26 @@ const ACTION_HANDLERS = {
     }
     if (!state.page || action.page.current > state.page.current) {
       let result = state.commodities || []
-      result.concat(action.commodities)
+      result = result.concat(action.commodities)
       return {
         ...state,
         ...action,
         commodities: result,
+        hasMore: (action.page.current < action.page.pages - 1),
+        loading: action.loading
+      }
+    } else if (action.page.current <= state.page.current) {
+      let commodities = action.commodities
+      let page = action.page
+      let initialed = true
+      let hasMore = (action.page.current < action.page.pages - 1)
+      let loading = action.loading
+      return {
+        commodities,
+        page,
+        initialed,
+        hasMore,
+        loading,
       }
     }
     return state

@@ -64,12 +64,15 @@ function getQueryString(name) {
 let code = getQueryString('code')
 let state = getQueryString('state')
 if (code && state) {
-  get(apiUrl.wechatLogin, {
-    code,
-    state,
-  }).then(() => {
+  if (process.env.NODE_ENV === 'production' && window.location.pathname.indexOf('dawdawdaw') !== -1) {
     render()
-  })
+  } else
+    get(apiUrl.wechatLogin, {
+      code,
+      state,
+    }).then(() => {
+      render()
+    })
 } else if (state || code) {
   Toast.fail('登录异常')
   window.location.href = '/'
