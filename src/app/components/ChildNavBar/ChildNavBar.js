@@ -3,6 +3,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import CustomIcon from '../CustomIcon'
 import { withRouter } from 'react-router-dom'
+import { getQueryString } from '../../Util'
 const isIPhone = new RegExp('\\biPhone\\b|\\biPod\\b', 'i').test(window.navigator.userAgent)
 let wrapProps
 if (isIPhone) {
@@ -21,12 +22,15 @@ class ChildNavBar extends React.Component {
     onSearch: PropTypes.func,
     style: PropTypes.object,
     toHome: PropTypes.bool.isRequired,
+    fix: PropTypes.bool.isRequired,
+    noTrans: PropTypes.bool.isRequired,
   }
   static defaultProps = {
     icon: <Icon type="left" />,
     mode: 'light',
     fix: true,
     toHome: false,
+    noTrans: false,
   }
   constructor(props) {
     super(props)
@@ -46,6 +50,10 @@ class ChildNavBar extends React.Component {
     title: obj.title,
   }))
 
+  componentWillMount() {
+    this.returnPath = getQueryString('returnPath')
+  }
+
   showShareActionSheet = () => {
     ActionSheet.showShareActionSheetWithOptions({
       options: this.dataList,
@@ -59,12 +67,18 @@ class ChildNavBar extends React.Component {
   }
 
   toHome = () => {
-    this.props.history.push('/')
+    this.props.history.replace('/')
+  }
+  toReturn = () => {
+    // if (!this.props.noTrans && transBegining()) {
+    //   return transAfter()
+    // }
+    this.props.icon ? (this.returnPath ? this.props.history.push(this.returnPath) : this.props.history.goBack()) : null
   }
   render() {
-    const { title, rightContent, icon, mode, onLeftClick, fix } = { ...this.props }
+    const { title, rightContent, icon, mode, onLeftClick, fix } = this.props
     const rc = [
-      <Icon key="1" type="ellipsis" onClick={this.showShareActionSheet} />,
+      // <Icon key="1" type="ellipsis" onClick={this.showShareActionSheet} />,
     ]
     const props = {
       icon,
@@ -83,13 +97,13 @@ class ChildNavBar extends React.Component {
     }
     let resultRightContent = rightContent || rc
     if (this.props.toHome) {
-      resultRightContent = [<CustomIcon onClick={this.toHome} style={{ marginRight: 15  }} type={require('../../../image/home.svg')} key="nav-to-home" />].concat(resultRightContent)
+      resultRightContent = [<CustomIcon onClick={this.toHome} style={{ marginRight: 5 }} type={require('../../../image/home.svg')} key="nav-to-home" />].concat(resultRightContent)
     }
     return <div>
       <NavBar
         {...props}
         rightContent={resultRightContent}
-        onLeftClick={props.icon ? this.props.history.goBack : null}
+        onLeftClick={this.toReturn}
       >{title}</NavBar>
     </div>
   }

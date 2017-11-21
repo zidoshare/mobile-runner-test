@@ -61,11 +61,8 @@ class MyAddress extends Component {
             postLoading: false,
             edit: false,
             update: false,
-          })
+          }, transAfter)
           this.loadAddress()
-          if (this.state.edit) {
-            transAfter()
-          }
         }).catch(() => this.setState({
           postLoading: false,
           val: this.state.update ? {} : this.state.val,

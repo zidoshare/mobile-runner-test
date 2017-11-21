@@ -38,7 +38,7 @@ export default class Recommends extends Component {
               {recommends.map((value, index) => (
                 <div key={'recom' + index}>
                   <Link to={`/commodity/${value.id}`}>
-                    <img src={`${value.head}${value.url}`} />
+                    <img src={value.head?`${value.head}${value.url}`:'http://odp22tnw6.bkt.clouddn.com/v2/ccas/default-no-pic.png'} />
                     <h5>{value.name}</h5>
                     <p>{value.price}</p>
                     <p><Timer endTime={value.endTime} /></p>

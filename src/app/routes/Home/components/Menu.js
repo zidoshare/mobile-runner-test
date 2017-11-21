@@ -21,7 +21,7 @@ const menu = [{
   icon:'http://odp22tnw6.bkt.clouddn.com/v2/ccas/icon-my.png',
   text:'我的',
   span:'个人中心',
-  path:'/person',
+  path:'/person?returnPath=/',
 }]
 
 class Menu extends Component {

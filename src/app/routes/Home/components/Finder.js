@@ -18,7 +18,7 @@ export default class Finder extends Component {
           <FlexItem className="finder-item-container right-line">
             {auction ? <StandLink to="/auction">
               <h5>专场拍卖</h5>
-              <p><Timer endTime={auction.endTime} /></p>
+              <p>{auction.startTime > new Date().getTime()?'暂未开拍':<Timer endTime={auction.endTime} />}</p>
               <div>
                 <img src={auction.imageUrl} />
               </div>
@@ -28,7 +28,7 @@ export default class Finder extends Component {
               </div>}
           </FlexItem>
           <div className="finder-item-container right-panel">
-            <StandLink to="/commodities">
+            <StandLink to="/commodities" block>
               <Flex className="bottom-line">
                 <FlexItem>
                   <h5>精品推荐</h5>
@@ -40,7 +40,7 @@ export default class Finder extends Component {
                 </FlexItem>
               </Flex>
             </StandLink>
-            <StandLink to="http://www.chuangyuandi.net.cn" out={true}>
+            <StandLink to="http://www.chenxiculture.cn/Shop/index/sid/8001283.html" out={true} block>
               <Flex>
                 <FlexItem>
                   <h5>藏品自营</h5>

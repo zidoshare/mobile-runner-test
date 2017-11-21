@@ -24,7 +24,7 @@ export default class SliderList extends Component {
     }
     return (
       <WingBlank size="sm" className="winner-slider-container">
-        <h1>幸运大咖</h1>
+        <h3>幸运大咖</h3>
         <div className="winner-slider-container-panel">
           <Slider {...settings}>
             {winners.map((value, index) => (

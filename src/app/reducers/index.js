@@ -42,9 +42,9 @@ export const transBeginTo = (url) => {
 
 history.listen((location, action) => {
   if (return_path != 0) {
-    if(action === 'POP'){
+    if (action === 'POP') {
       return_path++
-    }else if(action === 'PUSH'){
+    } else if (action === 'PUSH') {
       return_path--
     }
   }
@@ -52,5 +52,8 @@ history.listen((location, action) => {
 export const transAfter = () => {
   store.dispatch(go(return_path))
   return_path = 0
+}
+export const transBegining = () => {
+  return return_path !== 0
 }
 export default store

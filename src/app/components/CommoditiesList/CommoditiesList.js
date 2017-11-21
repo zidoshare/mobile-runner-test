@@ -3,6 +3,30 @@ import PropTypes from 'prop-types'
 import { ListView, PullToRefresh } from 'antd-mobile'
 import StandLink from '../StandLink'
 import { isEmpty } from '../../Util'
+
+const stateList = {
+  'ADDPRICE': {
+    span: '竞拍未完成',
+  },
+  'WAITREFUND': {
+    span: '还未进行退款处理',
+  },
+  'REFUNDING': {
+    span: '退款中',
+  },
+  'REFUNDED': {
+    span: '退款完成',
+  },
+  'EDITORDER': {
+    span: '竞拍完成,填写订单',
+  },
+  'TOPAY': {
+    span: '订单已处理 支付状态处理',
+  },
+  'PAYED': {
+    span: '已支付',
+  }
+}
 export default class CommoditiesList extends Component {
   static propTypes = {
     dataSource: PropTypes.array.isRequired,
@@ -18,7 +42,7 @@ export default class CommoditiesList extends Component {
     })
 
     this.state = {
-      dataSource: dataSource.cloneWithRows(this.props.dataSource), 
+      dataSource: dataSource.cloneWithRows(this.props.dataSource),
       refreshing: false,
     }
   }
@@ -61,7 +85,12 @@ export default class CommoditiesList extends Component {
             </div>
             <div style={{ lineHeight: 1 }}>
               <div style={{ marginBottom: '8px', fontWeight: 'bold' }}>{rowData.name}</div>
-              <div><span style={{ fontSize: '22px', color: '#FF6E27' }}>¥{rowData.price}</span></div>
+              <div className="clear-fix">
+                <span style={{ fontSize: '22px', color: '#FF6E27' }}>¥{rowData.price}</span>
+                {rowData.stateOnUser ? <div className="pull-right">
+                  <span>{stateList[rowData.stateOnUser].span}</span>
+                </div> : null}
+              </div>
             </div>
           </div>
         </StandLink>

@@ -1,6 +1,6 @@
 {
-  "name": "cyd-view",
-  "version": "0.0.2",
+  "name": "ccas-mobile-view",
+  "version": "1.0.0",
   "description": "创源地官方网站前端项目",
   "main": "index.js",
   "scripts": {

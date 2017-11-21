@@ -14,6 +14,8 @@ import Auction from './routes/Auctions'
 import './style/core.scss'
 import MyAddress from './routes/MyAddress'
 import Follow from './routes/Follow'
+import MyAuction from './routes/MyAuction'
+import PayResult from './routes/PayResult'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -33,7 +35,9 @@ export default class App extends React.Component {
             <Route path="/personInfo" component={PersonInfo} />
             <Route path="/address" component={MyAddress} />
             <Route path="/auction" component={Auction} />
-            <Follow path="/follow" component={Follow} />
+            <Route path="/follow" component={Follow} />
+            <Route path="/myAuction" component={MyAuction} />
+            <Route path="/payResult/:orderId" component={PayResult} />
           </Switch>
         </ConnectedRouter>
       </Provider>

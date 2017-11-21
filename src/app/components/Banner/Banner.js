@@ -20,7 +20,9 @@ export default class Banner extends Component {
       autoplaySpeed: 2000,
       arrows: false,
       dots: true,
-      adaptiveHeight: true,
+      adaptiveHeight: false,
+      slidesToShow: 1,
+      slidesToScroll: 1,
     }
     const bannerList = banner.map((ii, index) => (
       <div key={'banner' + index} className="banner-item-container">
@@ -28,14 +30,11 @@ export default class Banner extends Component {
       </div>
     ))
     return (
-      <div>
-        {bannerList.length > 0 ? <Slider
-          {...settings}
-        >
-          {bannerList}
-        </Slider> : null}
-
-      </div>
+      bannerList.length > 0 ? <Slider
+        {...settings}
+      >
+        {bannerList}
+      </Slider> : <div />
     )
   }
 }

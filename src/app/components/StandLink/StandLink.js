@@ -11,10 +11,11 @@ class StandLink extends Component {
     className: PropTypes.string,
     out: PropTypes.bool.isRequired,
     newTab: PropTypes.bool.isRequired,
+    block: PropTypes.bool,
   }
   static defaultProps = {
     out: false,
-    className:'',
+    className: '',
     newTab: false,
   }
   handleGoto = () => {
@@ -30,7 +31,7 @@ class StandLink extends Component {
   render() {
     const { children } = this.props
     const props = {
-      style: this.props.style || { display: 'inline-block' },
+      style: this.props.style || (this.props.block ? null : { display: 'inline-block' }),
       className: 'stand-link ' + this.props.className,
     }
     return (

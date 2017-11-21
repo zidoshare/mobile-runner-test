@@ -16,10 +16,7 @@ const PersonNav = [{
 }, {
   icon: 'http://odp22tnw6.bkt.clouddn.com/v2/ccas/icon-my-auction.png',
   text: '我的拍卖',
-  toast: {
-    type: 'fail',
-    text: '暂未开放',
-  }
+  path: '/myAuction'
 }, {
   icon: 'http://odp22tnw6.bkt.clouddn.com/v2/ccas/icon-help.png',
   text: '帮助',

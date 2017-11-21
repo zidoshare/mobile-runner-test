@@ -5,7 +5,7 @@
  */
 import objToQuery from './objToQuery'
 import isEmpty from './isEmpty'
-import { Toast } from 'antd-mobile'
+import { Toast, Modal } from 'antd-mobile'
 import apiUrl from '../apiUrl'
 export const defaultReject = (err) => {
   Toast.fail(err.message || '服务器异常', 2)
@@ -69,6 +69,7 @@ export const resolveResponse = (response) => {
         }).then((data) => {
           if (process.env.NODE_ENV === 'development') {
             console.log(data)
+            Modal.prompt('url', data, [{ text: '确定', }])
             throw new AuthError(response.status)
           }
           //TODO 获取登录路径并跳转到登录页

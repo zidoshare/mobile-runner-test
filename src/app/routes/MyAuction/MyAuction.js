@@ -1,63 +1,42 @@
 import React, { Component } from 'react'
 import TypesPage from '../../components/TypesPage'
 import ChildNavBar from '../../components/ChildNavBar'
-import { get } from '../../Util'
-import apiUrl from '../../apiUrl'
-export default class MyAuction extends Component {
+import { loadCommodities } from './module'
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
+class MyAuction extends Component {
+  static propTypes = {
+    types: PropTypes.array.isRequired,
+    loadCommodities: PropTypes.func.isRequired,
+  }
   constructor(props) {
     super(props)
-    this.state = {
-      types: [],
-    }
   }
-
-  loadCommodities = (type, currentPage) => {
-    return get(apiUrl.commoditiesUrl, {
-      currentPage,
-      type,
-    }).then(data => {
-      const types = this.state.types
-
-      const action = {
-        condition: {
-          type,
-        },
-        data: data.records,
-      }
-      const page = {
-        ...data,
-      }
-      delete page.records
-      action.page = page
-
-      const result = types.find(item => item.id === type.id)
-      if (!result) {
-        return
-      }
-      if (!result.page || action.page.current > result.page.current) {
-        if (!result.commodities) {
-          result.commodities = []
-        }
-        result.commodities = result.commodities.concat(action.data)
-        result.page = action.page
-        result.initialed = true
-        result.hasMore = (action.page.current < action.page.pages - 1)
-        this.setState({
-          types: [...types]
-        })
-        return
-      }
+  componentDidMount(){
+    const {types,loadCommodities} = this.props
+    types.forEach(t => {
+      loadCommodities(t.id)
     })
   }
   render() {
-
+    const { types, loadCommodities } = this.props
     return (
-      <div>
-        <ChildNavBar title="我的拍卖" />
-        <div className="custom-container">
-          <TypesPage types={this.state.types} loadCommodities={this.loadCommodities} />
+      <div className="commodities-container">
+        <ChildNavBar title="我的拍卖"/>
+        <div className="commodities-content-wrapper">
+          <TypesPage types={types} loadCommodities={loadCommodities} />
         </div>
       </div>
     )
   }
 }
+
+const mapStateToProps = (state) => ({
+  ...state.mau
+})
+
+const mapDispatchToProps = {
+  loadCommodities,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MyAuction)
