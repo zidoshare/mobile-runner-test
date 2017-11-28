@@ -4,6 +4,7 @@ import { AppContainer } from 'react-hot-loader'
 import { get } from './app/Util'
 import apiUrl from './app/apiUrl'
 import { Toast } from 'antd-mobile'
+import { replaceHref } from './app/reducers'
 const Root = document.getElementById('root')
 
 
@@ -70,6 +71,11 @@ if (code && state) {
     get(apiUrl.wechatLogin, {
       code,
       state,
+    }).then(() => {
+      replaceHref({
+        pathname: window.location.pathname,
+        search: window.location.search ? window.location.search.replace(/code=([^&]*)&state=([^&]*)(&|$)/i, '') : null,
+      })
     }).then(() => {
       render()
     })

@@ -46,8 +46,7 @@ export default class PayResult extends Component {
       setTimeout(() => {
         get(apiUrl.payStateUrl, {
           orderId: this.state.orderId
-        }).then((data) => {
-          alert(JSON.stringify(data))
+        }).then(() => {
           this.setState({
             code: 'pay-success',
           }, () => {
@@ -67,7 +66,6 @@ export default class PayResult extends Component {
   }
 
   handleFinish = () => {
-    console.log(transBegining())
     if (transBegining()) {
       transAfter()
     } else {

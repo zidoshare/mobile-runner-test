@@ -12,7 +12,7 @@ const PersonNav = [{
 }, {
   icon: 'http://odp22tnw6.bkt.clouddn.com/v2/ccas/icon-collection.png',
   text: '我的收藏',
-  path:'/follow'
+  path: '/follow'
 }, {
   icon: 'http://odp22tnw6.bkt.clouddn.com/v2/ccas/icon-my-auction.png',
   text: '我的拍卖',
@@ -31,10 +31,7 @@ const PersonNav = [{
 }, {
   icon: 'http://odp22tnw6.bkt.clouddn.com/v2/ccas/icon-history.png',
   text: '历史记录',
-  toast: {
-    type: 'fail',
-    text: '暂未开放',
-  }
+  path: '/history'
 }]
 
 const colors = [

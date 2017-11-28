@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import ChildNavBar from '../../components/ChildNavBar'
-import { List, Modal, Button, InputItem, TextareaItem, Switch, Badge } from 'antd-mobile'
+import { List, Modal, Button, InputItem, TextareaItem, Switch, Badge, ActivityIndicator } from 'antd-mobile'
 import { get, post } from '../../Util'
 import apiUrl from '../../apiUrl'
 import { createForm } from 'rc-form'
@@ -12,6 +12,12 @@ const operation = Modal.operation
 class MyAddress extends Component {
   static propTypes = {
     form: PropTypes.object.isRequired,
+    choose: PropTypes.bool.isRequired,
+    onChoose: PropTypes.func.isRequired,
+  }
+  static defaultProps = {
+    choose: false,
+    onChoose: () => { }
   }
   constructor(props) {
     super(props)
@@ -22,15 +28,20 @@ class MyAddress extends Component {
       postLoading: false,
       error: {},
       val: {},
+      loading: true,
     }
   }
   componentDidMount() {
     this.loadAddress()
   }
   loadAddress = () => {
+    this.setState({
+      loading: true,
+    })
     get(apiUrl.allAddressUrl).then(data => {
       this.setState({
         address: data,
+        loading: false,
       })
     })
   }
@@ -61,7 +72,7 @@ class MyAddress extends Component {
             postLoading: false,
             edit: false,
             update: false,
-          }, transAfter)
+          }, this.props.choose ? () => { } : transAfter)
           this.loadAddress()
         }).catch(() => this.setState({
           postLoading: false,
@@ -116,12 +127,20 @@ class MyAddress extends Component {
       setting.title = '编辑收货信息'
       setting.icon = null
     }
+    if (this.props.choose) {
+      setting.onLeftClick = () => {
+        this.props.onChoose()
+      }
+      setting.title = '选择收货地址'
+    }
     return (
       <div>
         <ChildNavBar {...setting} />
         <div className="custom-container">
-          {this.getFormDom()}
-          {this.getCommonDom()}
+          {this.state.loading ? <ActivityIndicator text="加载中..." toast /> : <div>
+            {this.getFormDom()}
+            {this.getCommonDom()}
+          </div>}
 
         </div>
       </div>
@@ -172,16 +191,24 @@ class MyAddress extends Component {
       </List>
     }
   }
-
   getCommonDom = () => {
     if (!this.state.edit && !this.state.update) {
       return <List>
         {this.state.address.map((value, index) => (
-          <ListItem key={'address' + index} extra={value.receivingName} align="top" multipleLine onClick={() => operation([
-            { text: '编辑', onPress: this.handleUpdate.bind(this, value) },
-            { text: '删除', onPress: this.handleDelete.bind(this, value.id) },
-            { text: '设为默认收货地址', onPress: this.handleDefault.bind(this, value.id) },
-          ])}>
+          <ListItem key={'address' + index} extra={value.receivingName} align="middle" multipleLine onClick={() => operation(function () {
+            let op = [
+              { text: '编辑', onPress: this.handleUpdate.bind(this, value) },
+              { text: '删除', onPress: this.handleDelete.bind(this, value.id) },
+              { text: '设为默认收货地址', onPress: this.handleDefault.bind(this, value.id) },
+            ]
+            if (this.props.choose) {
+              return [{
+                text: '选择该地址',
+                onPress: () => { this.props.onChoose(value) }
+              }].concat(op)
+            }
+            return op
+          }.call(this))}>
             {value.address}
             <Brief>{value.receivingPhone}{value.isDefault ? <Badge text={'默认地址'} style={{ marginLeft: 12 }} /> : null}</Brief>
           </ListItem>

@@ -6,7 +6,7 @@ class StandLink extends Component {
   static propTypes = {
     history: PropTypes.object.isRequired,
     children: PropTypes.node.isRequired,
-    to: PropTypes.string.isRequired,
+    to: PropTypes.oneOfType([PropTypes.string, PropTypes.func]).isRequired,
     style: PropTypes.object,
     className: PropTypes.string,
     out: PropTypes.bool.isRequired,
@@ -20,6 +20,9 @@ class StandLink extends Component {
   }
   handleGoto = () => {
     const { to } = this.props
+    if (typeof to === 'function') {
+      return to()
+    }
     if (this.props.out) {
       if (this.props.newTab) {
         window.open(to)

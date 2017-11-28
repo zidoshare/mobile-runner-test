@@ -13,7 +13,7 @@ export const loadCommodities = (type, currentPage) => dispatch => {
   })
   return get(apiUrl.myAuctionUrl, {
     currentPage,
-    type,
+    orderType: type,
   }).then(data => {
     const action = {
       type: MAU_LOAD_COMMODITIES,

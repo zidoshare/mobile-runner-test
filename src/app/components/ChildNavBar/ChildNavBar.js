@@ -73,6 +73,9 @@ class ChildNavBar extends React.Component {
     // if (!this.props.noTrans && transBegining()) {
     //   return transAfter()
     // }
+    if (this.props.onLeftClick) {
+      return this.props.onLeftClick()
+    }
     this.props.icon ? (this.returnPath ? this.props.history.push(this.returnPath) : this.props.history.goBack()) : null
   }
   render() {

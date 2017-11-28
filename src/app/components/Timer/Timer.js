@@ -42,7 +42,7 @@ export default class Timer extends React.Component {
     var diffSecond = parseInt((endTime - startTime) / 1000) //结束时间到现在差的秒数
     if (diffSecond > 0) {
       this.setState({
-        remaining: countdown(startTime, endTime,{
+        remaining: countdown(startTime, endTime, {
           years: false,
           mouths: false,
           days: true,
@@ -76,7 +76,7 @@ Timer.defaultProps = {
   startTime: new Date(),
   callback: () => {
   },
-  endText: '计时结束',
+  endText: '拍卖结束',
 }
 Timer.propTypes = {
   style: PropTypes.object,

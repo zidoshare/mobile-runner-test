@@ -16,6 +16,10 @@ import MyAddress from './routes/MyAddress'
 import Follow from './routes/Follow'
 import MyAuction from './routes/MyAuction'
 import PayResult from './routes/PayResult'
+import Order from './routes/Order'
+import MyHistory from './routes/MyHistoiry'
+import Messages from './routes/Messages'
+import MessageInfo from './routes/MessageInfo'
 
 export default class App extends React.Component {
   constructor(props) {
@@ -38,6 +42,10 @@ export default class App extends React.Component {
             <Route path="/follow" component={Follow} />
             <Route path="/myAuction" component={MyAuction} />
             <Route path="/payResult/:orderId" component={PayResult} />
+            <Route path="/order/:id" component={Order} />
+            <Route path="/history" component={MyHistory} />
+            <Route path="/messages" exact component={Messages} />
+            <Route path="/messages/info/:id" component={MessageInfo} />
           </Switch>
         </ConnectedRouter>
       </Provider>

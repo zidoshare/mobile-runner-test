@@ -5,14 +5,14 @@
  */
 import objToQuery from './objToQuery'
 import isEmpty from './isEmpty'
-import { Toast, Modal } from 'antd-mobile'
+import { Toast } from 'antd-mobile'
 import apiUrl from '../apiUrl'
 export const defaultReject = (err) => {
   Toast.fail(err.message || '服务器异常', 2)
   throw err
 }
 
-function AjaxError(message, code, data) {
+export function AjaxError(message, code, data) {
   this.success = false
   this.message = message
   this.code = code
@@ -20,11 +20,18 @@ function AjaxError(message, code, data) {
 }
 AjaxError.prototype = new Error()
 
-function AuthError(code = 403, message, data) {
+export function AuthError(code = 403, message, data) {
   this.code = code
   this.message = message
   this.data = data
 }
+
+export function LogicError(message, data) {
+  this.message = message
+  this.data = data
+}
+
+LogicError.prototype = new Error()
 
 AuthError.prototype = new Error()
 
@@ -57,7 +64,6 @@ export const resolveResponse = (response) => {
     case 401:
       if (json.data) {
         if (process.env.NODE_ENV === 'development') {
-          console.log(json.data)
           throw new AuthError(response.status)
         }
         window.location.href = json.data
@@ -69,7 +75,6 @@ export const resolveResponse = (response) => {
         }).then((data) => {
           if (process.env.NODE_ENV === 'development') {
             console.log(data)
-            Modal.prompt('url', data, [{ text: '确定', }])
             throw new AuthError(response.status)
           }
           //TODO 获取登录路径并跳转到登录页
@@ -80,7 +85,6 @@ export const resolveResponse = (response) => {
     case 500:
       throw new AjaxError(json.message, response.code)
     default:
-      console.log(json)
       if (contentType && contentType.indexOf('application/json') !== -1)
         throw new AjaxError(json.message, response.code)
   }
@@ -107,7 +111,7 @@ export const createHttpPromise = (url, data = {}, headers = require('./HttpHeade
     if (json.success && !isEmpty(json.message))
       Toast.success(json.message, 1)
     if (!json.success)
-      throw new AjaxError(json.message, null, json.data)
+      throw new LogicError(json.message, json.data)
     return json.data
   }).catch((err) => {
     if (err instanceof AuthError) {

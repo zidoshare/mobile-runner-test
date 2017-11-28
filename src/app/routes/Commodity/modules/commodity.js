@@ -1,7 +1,8 @@
 import { get, post, pay } from '../../../Util'
 import apiUrl from '../../../apiUrl'
+import React from 'react'
 import { transBeginTo } from '../../../reducers'
-import { Toast } from 'antd-mobile'
+import { Toast, Modal } from 'antd-mobile'
 const COM_LOAD_BASE = 'COM_LOAD_BASE'
 const COM_LOAD_INFO = 'COM_LOAD_INFO'
 const COM_SUBMIT_ADD = 'COM_SUBMIT_ADD'
@@ -82,40 +83,81 @@ export const submit = (commodityId, addPrice, currentPrice) => dispatch => {
     type: COM_SUBMIT_ADD,
     subLoading: true,
   })
-  post(apiUrl.addPriceUrl + `?commodityId=${commodityId}&addPrice=${addPrice}&currentPrice=${currentPrice}`).then(() => {
-    dispatch({
-      type: COM_SUBMIT_ADD,
-      subLoading: false,
-    })
-    loadPrice(commodityId)(dispatch)
-  }).catch(err => {
-    dispatch({
-      type: COM_SUBMIT_ADD,
-      subLoading: false,
-    })
-    const code = err.data.errorCode
-    switch (code) {
-      case 'phone':
-        transBeginTo('/personInfo')
-        break
-      case 'address':
-        transBeginTo('/address')
-        break
-      case 'bond':
-        post(`${apiUrl.payBondUrl}?commodityId=${commodityId}&payMethod=WECHAT`).then((result) => {
-          return pay(result.data).then(() => {
-            transBeginTo({
-              pathname: `/payResult/${result.orderId}`,
-              search: '?code=wait-result'
-            })
-          }, (res) => {
-            Toast.fail(res.message)
-          })
+  get(apiUrl.isReadProtocolUrl)
+    .then((code) => {
+      if (code == 0 || code == 1) {
+        return new Promise((resolve, reject) => {
+          Modal.alert('服务协议', <p>在缴纳保证金前，您应该确认并同意用户协议，以保障您的权益<a href="http://api.chuangyuandi.net.cn/ccas-protocol.htm" target="_blank">点击阅读服务协议</a></p>, [
+            { text: '拒绝', onPress: reject, style: 'default' },
+            { text: '同意', onPress: resolve },
+          ])
         })
-
-        break
-    }
-  })
+      }
+    })
+    .then(() => {
+      return get(apiUrl.agreeUrl, {
+        code: 2
+      })
+    }, () => {
+      get(apiUrl.agreeUrl, {
+        code: 0,
+      })
+      dispatch({
+        type: COM_SUBMIT_ADD,
+        subLoading: false,
+      })
+      throw new Error('用户拒绝协议')
+    }).then(() => {
+      return post(apiUrl.addPriceUrl + `?commodityId=${commodityId}&addPrice=${addPrice}&currentPrice=${currentPrice}`).then(() => {
+        loadPrice(commodityId)(dispatch)
+      }).catch(err => {
+        let code = 'other'
+        if (err && err.data && err.data.errorCode)
+          code = err.data.errorCode
+        switch (code) {
+          case 'phone':
+            return new Promise((resolve, reject) => {
+              Modal.alert('注意', '检测到你未绑定手机号，请点击确定以绑定手机号', [
+                { text: '取消', onPress: reject, style: 'default' },
+                { text: '确定', onPress: resolve },
+              ])
+            }).then(() => {
+              transBeginTo('/personInfo')
+            })
+          case 'address':
+            return new Promise((resolve, reject) => {
+              Modal.alert('注意', '检测到你没有默认收货地址，请点击确定以添加默认收货地址', [
+                { text: '取消', onPress: reject, style: 'default' },
+                { text: '确定', onPress: resolve },
+              ])
+            }).then(() => {
+              transBeginTo('/address')
+            })
+          case 'bond':
+            return post(`${apiUrl.payBondUrl}?commodityId=${commodityId}&payMethod=WECHAT`)
+              .then((result) => {
+                return pay(result.data).then(() => {
+                  transBeginTo({
+                    pathname: `/payResult/${result.orderId}`,
+                    search: '?code=wait-result'
+                  })
+                }, (res) => {
+                  Toast.fail(res.message)
+                })
+              })
+          default:
+            dispatch({
+              type: COM_SUBMIT_ADD,
+              subLoading: false,
+            })
+        }
+      }).then(() => {
+        dispatch({
+          type: COM_SUBMIT_ADD,
+          subLoading: false,
+        })
+      })
+    })
 }
 
 export const loadFollow = (commodityId) => dispatch => {
@@ -175,7 +217,6 @@ const ACTION_HANDLERS = {
       ...action.data,
     }
     if (nextPrice != nowPrice) {
-      console.log(nextPrice != nowPrice, nextPrice, nowPrice)
       return {
         ...state,
         commodity,

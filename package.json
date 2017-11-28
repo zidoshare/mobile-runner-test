@@ -57,6 +57,7 @@
   },
   "dependencies": {
     "antd-mobile": "^2.0.1",
+    "clamp-js": "^0.7.0",
     "history": "^4.7.2",
     "rc-form": "^1.5.0",
     "react": "^15.6.1",

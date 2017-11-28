@@ -27,11 +27,13 @@ export default class SliderList extends Component {
         <h3>幸运大咖</h3>
         <div className="winner-slider-container-panel">
           <Slider {...settings}>
-            {winners.map((value, index) => (
-              <div key={'winner' + index}>
-                <h6>恭喜[昵称] [手机号] 拍得XXX藏品，成交价xxx元</h6>
+            {winners.map((value, index) => {
+              const { nickname, phone, price, name } = value
+              let phoneLabel = phone.substr(0, 3) + '****' + phone.substr(7, 11)
+              return <div key={'winner' + index}>
+                <span style={{fontSize:12}}>恭喜[{nickname}] [{phoneLabel}] 拍得[{name}]，成交价{price}元</span>
               </div>
-            ))}
+            })}
           </Slider>
           <div className="ewmcyd-container">
             <img src="http://odp22tnw6.bkt.clouddn.com/ewmcyd.jpg" />

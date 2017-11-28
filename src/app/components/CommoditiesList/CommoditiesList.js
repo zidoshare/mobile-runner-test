@@ -1,15 +1,17 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { ListView, PullToRefresh } from 'antd-mobile'
+import { ListView, PullToRefresh, List, Badge } from 'antd-mobile'
 import StandLink from '../StandLink'
 import { isEmpty } from '../../Util'
-
+// const $clamp = require('clamp-js')
+const ListItem = List.Item
+const Brief = ListItem.Brief
 const stateList = {
   'ADDPRICE': {
     span: '竞拍未完成',
   },
   'WAITREFUND': {
-    span: '还未进行退款处理',
+    span: '等待退款',
   },
   'REFUNDING': {
     span: '退款中',
@@ -21,10 +23,17 @@ const stateList = {
     span: '竞拍完成,填写订单',
   },
   'TOPAY': {
-    span: '订单已处理 支付状态处理',
+    span: '未支付',
   },
   'PAYED': {
-    span: '已支付',
+    span: '已支付，待发货',
+  }
+}
+
+function getViewportSize() {
+  return {
+    width: window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth,
+    height: window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight
   }
 }
 export default class CommoditiesList extends Component {
@@ -34,6 +43,13 @@ export default class CommoditiesList extends Component {
     loadDataSource: PropTypes.func.isRequired,
     loading: PropTypes.bool.isRequired,
     page: PropTypes.object.isRequired,
+    height: PropTypes.number.isRequired,
+    type: PropTypes.oneOf(['commodity', 'message']),
+    history: PropTypes.object,
+  }
+  static defaultProps = {
+    height: 90,
+    type: 'commodity'
   }
   constructor(props) {
     super(props)
@@ -46,6 +62,7 @@ export default class CommoditiesList extends Component {
       refreshing: false,
     }
   }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.dataSource !== this.props.dataSource) {
       this.setState({
@@ -72,11 +89,36 @@ export default class CommoditiesList extends Component {
     const { page } = this.props
     this.props.loadDataSource(page.current + 1)
   }
-  render() {
 
+  handleToLink = () => {
+    
+  }
+
+  render() {
+    const listStyle = { overflow: 'auto', }
+    if (this.props.height) {
+      listStyle.minHeight = getViewportSize().height - this.props.height
+    }
     const row = (rowData) => {
+      const { stateOnUser } = rowData
+      const type = this.props.type
+      if (type == 'message') {
+        return <ListItem
+          arrow="horizontal"
+          multipleLine
+          wrap
+          align="middle"
+          onClick={() => { this.props.history.push(`/messages/info/${rowData.id}`) }}>
+          {rowData.isRead == 0 ? <Badge dot><span>{rowData.title}</span></Badge> : <span>{rowData.title}</span>}<Brief>{rowData.content}</Brief>
+        </ListItem>
+      }
+      let to = `/commodity/${rowData.id}`
+      if (stateOnUser == 'EDITORDER' || stateOnUser == 'TOPAY')
+        to = `/order/${rowData.id}`
+      else if (stateOnUser == 'PAYED')
+        to = this.handleToLink
       return (
-        <StandLink to={`/commodity/${rowData.id}`} style={{}} key={`item-${rowData.id}`} className="com-list-item">
+        <StandLink to={to} style={{}} key={`item-${rowData.id}`} className="com-list-item">
           <div className="com-list-item-head">{rowData.title}</div>
           <div style={{ padding: '15px 0' }}>
             <div style={{ textAlign: 'center' }}>
@@ -86,7 +128,7 @@ export default class CommoditiesList extends Component {
             <div style={{ lineHeight: 1 }}>
               <div style={{ marginBottom: '8px', fontWeight: 'bold' }}>{rowData.name}</div>
               <div className="clear-fix">
-                <span style={{ fontSize: '22px', color: '#FF6E27' }}>¥{rowData.price}</span>
+                <span style={{ fontSize: '22px', color: '#FF6E27' }}>¥{rowData.currentPrice}</span>
                 {rowData.stateOnUser ? <div className="pull-right">
                   <span>{stateList[rowData.stateOnUser].span}</span>
                 </div> : null}
@@ -96,29 +138,31 @@ export default class CommoditiesList extends Component {
         </StandLink>
       )
     }
-    if (this.state.dataSource.getRowCount() == 0) {
-      return <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 100, background: '#fff' }}>
-        <p>暂无数据</p>
-      </div>
-    }
     return (
-      <ListView
-        ref={el => this.lv = el}
-        dataSource={this.state.dataSource}
-        renderFooter={() => (<div style={{ padding: 30, textAlign: 'center' }}>
-          {this.props.loading ? '加载中...' : '加载完毕'}
-        </div>)}
-        pullToRefresh={<PullToRefresh
-          refreshing={this.state.refreshing}
-          onRefresh={this.onRefresh}
-        />}
-        renderRow={row}
-        className="am-list"
-        useBodyScroll
-        scrollRenderAheadDistance={500}
-        onEndReached={this.onEndReached}
-        onEndReachedThreshold={10}
-      />
+      <div style={listStyle}>
+        <ListView
+          ref={el => this.lv = el}
+          dataSource={this.state.dataSource}
+          renderFooter={() => (
+            this.props.loading ? <div style={{ padding: 30, textAlign: 'center' }}>加载中...</div> :
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: 100 }}>
+                加载完毕
+            </div>
+          )}
+          pullToRefresh={<PullToRefresh
+            refreshing={this.state.refreshing}
+            onRefresh={this.onRefresh}
+          />}
+          renderRow={row}
+          useBodyScroll
+          className="am-list"
+          scrollRenderAheadDistance={500}
+          onEndReached={this.onEndReached}
+          onEndReachedThreshold={10}
+          style={{ height: '100%' }}
+          contentContainerStyle={listStyle}
+        />
+      </div>
     )
   }
 }

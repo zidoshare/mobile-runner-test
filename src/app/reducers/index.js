@@ -1,7 +1,9 @@
 import createHistory from 'history/createBrowserHistory'
 import { createStore, applyMiddleware, compose, combineReducers } from 'redux'
 import thunk from 'redux-thunk'
-import { routerMiddleware, routerReducer, push, go } from 'react-router-redux'
+import { routerMiddleware, routerReducer, push, go, replace } from 'react-router-redux'
+
+import messageReducer from './message'
 
 export const history = createHistory()
 
@@ -18,6 +20,7 @@ if (process.env.NODE_ENV === 'development') {
 export const makeRootReducer = (asyncReducers) => {
   return combineReducers({
     router: routerReducer,
+    ms: messageReducer,
     ...asyncReducers
   })
 }
@@ -35,7 +38,10 @@ export const injectReducer = ({ key, reducer }) => {
 }
 
 let return_path = 0
-export const transBeginTo = (url) => {
+export const transBeginTo = (url, origin) => {
+  if (origin) {
+    store.dispatch(replace(origin))
+  }
   store.dispatch(push(url))
   return_path = -1
 }
@@ -55,5 +61,9 @@ export const transAfter = () => {
 }
 export const transBegining = () => {
   return return_path !== 0
+}
+
+export const replaceHref = (path) => {
+  store.dispatch(replace(path))
 }
 export default store

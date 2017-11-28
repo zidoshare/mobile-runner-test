@@ -70,7 +70,7 @@ export const loadWinning = () => dispatch => {
     dispatch({
       type: HOME_LOAD_WINNING,
       winnersLoading: false,
-      winners: data,
+      winners: data.records,
     })
   }).catch(() => {
     dispatch({
@@ -84,6 +84,7 @@ const ACTION_HANDLERS = {
   [HOME_LOAD_BANNER]: (state, action) => ({ ...state, ...action }),
   [HOME_LOAD_AUCTIONS]: (state, action) => ({ ...state, ...action }),
   [HOME_LOAD_RECOMMENDS]: (state, action) => ({ ...state, ...action }),
+  [HOME_LOAD_WINNING]: (state, action) => ({ ...state, ...action }),
 }
 
 const initialState = {
@@ -92,19 +93,7 @@ const initialState = {
   recommendsLoading: true,
   winnersLoading: false,
   banner: ['http://odp22tnw6.bkt.clouddn.com/v2/ccas/banner.jpg', 'http://odp22tnw6.bkt.clouddn.com/v2/ccas/banner.jpg'],
-  winners: [{
-
-  }, {
-
-  }, {
-
-  }, {
-
-  }, {
-
-  }, {
-
-  }]
+  winners: [],
 }
 export default (state = initialState, action) => {
   const handler = ACTION_HANDLERS[action.type]

@@ -77,7 +77,6 @@ class PersonInfo extends Component {
       setting.title = '修改信息'
       setting.icon = null
     }
-    console.log(info)
     return (
       <div>
         <ActivityIndicator
