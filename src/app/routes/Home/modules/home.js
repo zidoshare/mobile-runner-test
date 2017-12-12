@@ -9,17 +9,22 @@ export const loadBanner = () => dispatch => {
     type: HOME_LOAD_BANNER,
     bannerLoading: true,
   })
-  get(apiUrl.bannerUrl).then(data => {
+  fetch(apiUrl.bannerUrl, {
+    method: 'GET',
+  }).then(response => {
+    return response.json()
+  }).then(data => {
     dispatch({
       type: HOME_LOAD_BANNER,
       banner: data,
       bannerLoading: false,
     })
-  }).catch(() => {
+  }).catch((err) => {
     dispatch({
       type: HOME_LOAD_BANNER,
       bannerLoading: false,
     })
+    throw err
   })
 }
 
@@ -47,7 +52,10 @@ export const loadRecommeds = () => dispatch => {
     type: HOME_LOAD_RECOMMENDS,
     recommendsLoading: true
   })
-  get(apiUrl.commoditiesUrl).then(data => {
+  get(apiUrl.commoditiesUrl, {
+    state: [1],
+    focus: 1,
+  }).then(data => {
     dispatch({
       type: HOME_LOAD_RECOMMENDS,
       recommendsLoading: false,
@@ -86,13 +94,12 @@ const ACTION_HANDLERS = {
   [HOME_LOAD_RECOMMENDS]: (state, action) => ({ ...state, ...action }),
   [HOME_LOAD_WINNING]: (state, action) => ({ ...state, ...action }),
 }
-
 const initialState = {
   bannerLoading: false,
   auctionLoading: true,
   recommendsLoading: true,
   winnersLoading: false,
-  banner: ['http://odp22tnw6.bkt.clouddn.com/v2/ccas/banner.jpg', 'http://odp22tnw6.bkt.clouddn.com/v2/ccas/banner.jpg'],
+  banner: [],
   winners: [],
 }
 export default (state = initialState, action) => {

@@ -18,8 +18,6 @@ export default class SliderList extends Component {
       slidesToShow: 6,
       className: 'win-list-container',
       infinite: true,
-      autoplay: true,
-      autoplaySpeed: 2000,
       vertical: true,
     }
     return (

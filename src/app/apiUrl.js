@@ -1,5 +1,5 @@
 export default {
-  bannerUrl: '',
+  bannerUrl: '/banner.json',
   typesUrl: '/api/v1/types',
   commoditiesUrl: '/api/v1/commodities/pages',
   commodityUrl: '/api/v1/commodity',

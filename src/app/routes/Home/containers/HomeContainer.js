@@ -15,11 +15,13 @@ export class Home extends Component {
     loadAuctions: PropTypes.func.isRequired,
     loadRecommeds: PropTypes.func.isRequired,
     loadWinning: PropTypes.func.isRequired,
+    loadBanner: PropTypes.func.isRequired,
     loadUnReadCount: PropTypes.func.isRequired,
     unReadCount: PropTypes.number.isRequired,
   }
 
   componentWillMount() {
+    this.props.loadBanner()
     this.props.loadAuctions()
     this.props.loadRecommeds()
     this.props.loadWinning()

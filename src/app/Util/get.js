@@ -17,10 +17,11 @@ export default (url, paramsObject, headers = require('./HttpHeader'))=>{
       }
       const array = paramsObject[key]
       for(let i = 0; i < array.length; i++){
-        if(array instanceof Object){
+        if(array[i] instanceof Object){
           const item = array[i]
           for(let k in item){
-            paramsArray.push(key+'.'+k + `[${i}]`+'='+ item[k])
+            if(item[key] != null)
+              paramsArray.push(key+ `[${i}]`+'.'+k +'='+ item[k])
           }
         }else{
           paramsArray.push(key+`[${i}]`+'='+array[i])

@@ -29,6 +29,7 @@ export const loadCommodities = (type, currentPage) => dispatch => {
   return get(apiUrl.commoditiesUrl, {
     currentPage,
     type,
+    state:[1],
   }).then(data => {
     const action = {
       type: COM_LOAD_COMMODITIES,

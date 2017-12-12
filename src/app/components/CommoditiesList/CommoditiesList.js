@@ -27,6 +27,9 @@ const stateList = {
   },
   'PAYED': {
     span: '已支付，待发货',
+  },
+  'DELIVERED': {
+    span: '已发货，点击查看物流',
   }
 }
 
@@ -91,7 +94,7 @@ export default class CommoditiesList extends Component {
   }
 
   handleToLink = () => {
-    
+
   }
 
   render() {
@@ -117,6 +120,11 @@ export default class CommoditiesList extends Component {
         to = `/order/${rowData.id}`
       else if (stateOnUser == 'PAYED')
         to = this.handleToLink
+      else if (stateOnUser == 'DELIVERED') {
+        to = () => {
+          window.location.href = `https://m.kuaidi100.com/index_all.html?type=${rowData.type}&postid=${rowData.postid}`
+        }
+      }
       return (
         <StandLink to={to} style={{}} key={`item-${rowData.id}`} className="com-list-item">
           <div className="com-list-item-head">{rowData.title}</div>
@@ -130,7 +138,7 @@ export default class CommoditiesList extends Component {
               <div className="clear-fix">
                 <span style={{ fontSize: '22px', color: '#FF6E27' }}>¥{rowData.currentPrice}</span>
                 {rowData.stateOnUser ? <div className="pull-right">
-                  <span>{stateList[rowData.stateOnUser].span}</span>
+                  <span>{stateList[rowData.stateOnUser] ? stateList[rowData.stateOnUser].span : null}</span>
                 </div> : null}
               </div>
             </div>

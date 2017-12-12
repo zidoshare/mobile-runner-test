@@ -48,7 +48,7 @@ if (isDev) {
     'react-hot-loader/patch',
     // activate HMR for React
 
-    'webpack-dev-server/client?http://localhost:3000',
+    'webpack-dev-server/client?http://localhost:3001',
     // bundle the client for webpack-dev-server and connect to the provided endpoint
 
     'webpack/hot/only-dev-server',
@@ -253,7 +253,7 @@ if (isDev) {
     publicPath: '/',
     clientLogLevel: 'none', //日志
     compress: true, //压缩
-    port: 3000,
+    port: 3001,
     stats: {
       colors: true
     },
